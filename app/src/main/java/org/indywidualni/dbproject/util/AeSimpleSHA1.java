@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Created by Krzysztof Grabowski on 13.12.15.
  */
-public class AeSimpleSHA1 {
+public final class AeSimpleSHA1 {
 
     private static String convertToHex(byte[] data) {
         StringBuilder buf = new StringBuilder();
@@ -24,7 +24,6 @@ public class AeSimpleSHA1 {
 
     public static String SHA1(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance("SHA-1");
-        //md.update(text.getBytes("iso-8859-1"), 0, text.length());
         md.update(text.getBytes("UTF-8"), 0, text.getBytes("UTF-8").length);
         byte[] sha1hash = md.digest();
         return convertToHex(sha1hash);

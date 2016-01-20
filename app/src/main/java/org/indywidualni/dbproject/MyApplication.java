@@ -8,6 +8,9 @@ import android.content.Context;
  */
 public class MyApplication extends Application {
 
+    // SHA1 of admin password
+    private static final String adminPassword = "d033e22ae348aeb5660fc2140aec35850c4da997";
+
     // context of an application for non context classes
     private static Context context;
 
@@ -15,6 +18,10 @@ public class MyApplication extends Application {
     public void onCreate() {
         context = getApplicationContext();
         super.onCreate();
+    }
+
+    public static String getAdminPassword() {
+        return adminPassword;
     }
 
     public static Context getContextOfApplication() {

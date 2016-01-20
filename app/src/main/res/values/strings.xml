@@ -1,5 +1,13 @@
 <resources>
-    <string name="app_name">Bazy Danych</string>
+
+    <string name="app_name">Wyniki maturalne</string>
     <string name="user">Użytkownik</string>
     <string name="admin">Administrator</string>
+    <string name="username">Login</string>
+    <string name="password">Hasło</string>
+    <string name="dialog_positive_login">Zaloguj</string>
+    <string name="dialog_negative_cancel">Anuluj</string>
+    <string name="unsupported_encoding">Niewspierane kodowanie</string>
+    <string name="no_such_algorithm">Brak algorytmu</string>
+
 </resources>
