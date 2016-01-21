@@ -27,7 +27,9 @@ public class CommentsDataSource {
     private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_COMMENT };
 
-    private CommentsDataSource() {}
+    private CommentsDataSource() {
+        open();
+    }
 
     public static CommentsDataSource getInstance() {
         if (instance == null) {
@@ -40,28 +42,23 @@ public class CommentsDataSource {
     }
 
     public void open() throws SQLException {
-        if (dbHelper == null)
-            dbHelper = new MySQLiteHelper(context);
-        if (database == null)
-            database = dbHelper.getWritableDatabase();
-        else {
-            //noinspection StatementWithEmptyBody
-            while (database.isDbLockedByCurrentThread()) {}
-            database = dbHelper.getWritableDatabase();
-        }
+        dbHelper = new MySQLiteHelper(context);
+        database = dbHelper.getWritableDatabase();
     }
 
-    public void close() {
+// synchronize it to class
+    public synchronized void close() {
         if (database != null) {
             //noinspection StatementWithEmptyBody
             while (database.isDbLockedByCurrentThread()) {}
             dbHelper.close();
             dbHelper = null;
             database = null;
+            instance = null;
         }
     }
 
-    public synchronized Comment createComment(String comment) {
+    public Comment createComment(String comment) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
         long insertId = database.insert(MySQLiteHelper.TABLE_COMMENTS, null,
@@ -75,14 +72,14 @@ public class CommentsDataSource {
         return newComment;
     }
 
-    public synchronized void deleteComment(Comment comment) {
+    public void deleteComment(Comment comment) {
         long id = comment.getId();
         System.out.println("Comment deleted with id: " + id);
         database.delete(MySQLiteHelper.TABLE_COMMENTS, MySQLiteHelper.COLUMN_ID
                 + " = " + id, null);
     }
 
-    public synchronized List<Comment> getAllComments() {
+    public List<Comment> getAllComments() {
         List<Comment> comments = new ArrayList<Comment>();
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,
