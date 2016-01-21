@@ -27,7 +27,7 @@ public class CommentsDataSource {
     private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_COMMENT };
 
-    private CommentsDataSource() {
+    private CommentsDataSource() throws SQLException {
         open();
     }
 
@@ -41,12 +41,12 @@ public class CommentsDataSource {
         return instance;
     }
 
-    public void open() throws SQLException {
+    public synchronized void open() throws SQLException {
         dbHelper = new MySQLiteHelper(context);
         database = dbHelper.getWritableDatabase();
     }
 
-// synchronize it to class
+    // synchronize it to class
     public synchronized void close() {
         if (database != null) {
             //noinspection StatementWithEmptyBody
@@ -58,7 +58,7 @@ public class CommentsDataSource {
         }
     }
 
-    public Comment createComment(String comment) {
+    public synchronized Comment createComment(String comment) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
         long insertId = database.insert(MySQLiteHelper.TABLE_COMMENTS, null,
@@ -72,14 +72,14 @@ public class CommentsDataSource {
         return newComment;
     }
 
-    public void deleteComment(Comment comment) {
+    public synchronized void deleteComment(Comment comment) {
         long id = comment.getId();
         System.out.println("Comment deleted with id: " + id);
         database.delete(MySQLiteHelper.TABLE_COMMENTS, MySQLiteHelper.COLUMN_ID
                 + " = " + id, null);
     }
 
-    public List<Comment> getAllComments() {
+    public synchronized List<Comment> getAllComments() {
         List<Comment> comments = new ArrayList<Comment>();
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,
