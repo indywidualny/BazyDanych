@@ -7,7 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.indywidualni.dbproject.MyApplication;
-import org.indywidualni.dbproject.models.Comment;
+import org.indywidualni.dbproject.models.Uczen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,26 +16,24 @@ import java.util.List;
  * Created by Krzysztof Grabowski on 20.01.16.
  * Singleton pattern
  */
-public class CommentsDataSource {
+public class MaturaDataSource {
 
-    private static volatile CommentsDataSource instance;
-    private static final Context context = MyApplication.getContextOfApplication();
+    private static volatile MaturaDataSource instance;
+    private static Context context;
 
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
 
-    private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
-            MySQLiteHelper.COLUMN_COMMENT };
-
-    private CommentsDataSource() throws SQLException {
+    private MaturaDataSource() throws SQLException {
+        context = MyApplication.getContextOfApplication();
         open();
     }
 
-    public static CommentsDataSource getInstance() {
+    public static MaturaDataSource getInstance() {
         if (instance == null) {
-            synchronized (CommentsDataSource.class) {
+            synchronized (MaturaDataSource.class) {
                 if (instance == null)
-                    instance = new CommentsDataSource();
+                    instance = new MaturaDataSource();
             }
         }
         return instance;
@@ -58,7 +56,26 @@ public class CommentsDataSource {
         }
     }
 
-    public synchronized Comment createComment(String comment) {
+    public String getUserPassword(String pesel) {
+
+        Cursor cursor = null;
+        String password = "";
+
+        try {
+            cursor = database.rawQuery("SELECT Haslo FROM " + MySQLiteHelper.TABLE_OSOBY
+                    + " WHERE PESEL=?", new String[] {pesel + ""});
+            if(cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                password = cursor.getString(cursor.getColumnIndex("Haslo"));
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        return password;
+    }
+/*    public Uczen createComment(String comment) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
         long insertId = database.insert(MySQLiteHelper.TABLE_COMMENTS, null,
@@ -67,27 +84,27 @@ public class CommentsDataSource {
                 allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
                 null, null, null);
         cursor.moveToFirst();
-        Comment newComment = cursorToComment(cursor);
+        Uczen newComment = cursorToComment(cursor);
         cursor.close();
         return newComment;
     }
 
-    public synchronized void deleteComment(Comment comment) {
+    public void deleteComment(Uczen comment) {
         long id = comment.getId();
         System.out.println("Comment deleted with id: " + id);
         database.delete(MySQLiteHelper.TABLE_COMMENTS, MySQLiteHelper.COLUMN_ID
                 + " = " + id, null);
     }
 
-    public synchronized List<Comment> getAllComments() {
-        List<Comment> comments = new ArrayList<Comment>();
+    public List<Uczen> getAllComments() {
+        List<Uczen> comments = new ArrayList<Uczen>();
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,
                 allColumns, null, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            Comment comment = cursorToComment(cursor);
+            Uczen comment = cursorToComment(cursor);
             comments.add(comment);
             cursor.moveToNext();
         }
@@ -96,11 +113,15 @@ public class CommentsDataSource {
         return comments;
     }
 
-    private Comment cursorToComment(Cursor cursor) {
-        Comment comment = new Comment();
+    public Uczen getStatUczen() {
+        Uczen
+    }
+
+    private Uczen cursorToComment(Cursor cursor) {
+        Uczen comment = new Uczen();
         comment.setId(cursor.getLong(0));
         comment.setComment(cursor.getString(1));
         return comment;
-    }
+    }*/
 
 }

@@ -3,6 +3,7 @@ package org.indywidualni.dbproject.activity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,13 +17,11 @@ import android.widget.Toast;
 
 import org.indywidualni.dbproject.MyApplication;
 import org.indywidualni.dbproject.R;
-import org.indywidualni.dbproject.database.CommentsDataSource;
-import org.indywidualni.dbproject.models.Comment;
+import org.indywidualni.dbproject.database.MaturaDataSource;
 import org.indywidualni.dbproject.util.AeSimpleSHA1;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 /**
  * Created by Krzysztof Grabowski on 13.12.15.
@@ -30,7 +29,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private CommentsDataSource datasource;
+    private MaturaDataSource dataSource;
+    private AlertDialog alertUserDialog;
+    private AlertDialog alertAdminDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,21 +46,9 @@ public class MainActivity extends AppCompatActivity {
         final Button user = (Button) findViewById(R.id.button1);
         final Button admin = (Button) findViewById(R.id.button2);
 
-        // TODO: Just an example. I have to figure it out
-        datasource = CommentsDataSource.getInstance();
-        try {
-            datasource.open();
-            List<Comment> values = datasource.getAllComments();
-            for (Comment comment : values)
-                Log.v(TAG, comment.toString());
-            datasource.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         // create dialogs now, one of them is gonna be used soon
-        final AlertDialog alertUserDialog = createUserLoginDialog();
-        final AlertDialog alertAdminDialog = createAdminLoginDialog();
+        alertUserDialog = createUserLoginDialog();
+        alertAdminDialog = createAdminLoginDialog();
 
         // user button onClick
         user.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +67,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "OnDestroy: Close database connection");
+        if (dataSource != null)
+            dataSource.close();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     @SuppressLint("InflateParams")
     private AlertDialog createUserLoginDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -92,10 +94,23 @@ public class MainActivity extends AppCompatActivity {
         adb.setPositiveButton(getString(R.string.dialog_positive_login), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                String username = user.getText().toString();
+                String pesel = user.getText().toString();
                 String password = pass.getText().toString();
-                Log.v(TAG, username);
-                Log.v(TAG, password);
+
+                try {
+                    dataSource = MaturaDataSource.getInstance();
+                    final String realPass = dataSource.getUserPassword(pesel);
+                    if (password.equals(realPass)) {
+                        Log.v(TAG, "user logged in");
+                    } else {
+                        Toast.makeText(getApplicationContext(), getString(R.string.wrong_password),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } catch (SQLException e) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.wrong_user),
+                            Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -106,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        adb.setCancelable(false);
+        adb.setCancelable(true);
         return adb.create();
     }
 
@@ -138,8 +153,12 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (passwordHash != null && passwordHash.equals(MyApplication.getAdminPassword())) {
-                    // TODO: proceed, open another activity
-
+                    Log.v(TAG, "admin logged in");
+                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.wrong_password),
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -151,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        adb.setCancelable(false);
+        adb.setCancelable(true);
         return adb.create();
     }
 
