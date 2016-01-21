@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.indywidualni.dbproject.MyApplication;
 import org.indywidualni.dbproject.models.Comment;
 
 import java.util.ArrayList;
@@ -13,30 +14,54 @@ import java.util.List;
 
 /**
  * Created by Krzysztof Grabowski on 20.01.16.
+ * Singleton pattern
  */
 public class CommentsDataSource {
 
-    // TODO: Just an example. I have to figure it out
+    private static volatile CommentsDataSource instance;
+    private static final Context context = MyApplication.getContextOfApplication();
 
-    // Database fields
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
+
     private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_COMMENT };
 
-    public CommentsDataSource(Context context) {
-        dbHelper = new MySQLiteHelper(context);
+    private CommentsDataSource() {}
+
+    public static CommentsDataSource getInstance() {
+        if (instance == null) {
+            synchronized (CommentsDataSource.class) {
+                if (instance == null)
+                    instance = new CommentsDataSource();
+            }
+        }
+        return instance;
     }
 
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        if (dbHelper == null)
+            dbHelper = new MySQLiteHelper(context);
+        if (database == null)
+            database = dbHelper.getWritableDatabase();
+        else {
+            //noinspection StatementWithEmptyBody
+            while (database.isDbLockedByCurrentThread()) {}
+            database = dbHelper.getWritableDatabase();
+        }
     }
 
     public void close() {
-        dbHelper.close();
+        if (database != null) {
+            //noinspection StatementWithEmptyBody
+            while (database.isDbLockedByCurrentThread()) {}
+            dbHelper.close();
+            dbHelper = null;
+            database = null;
+        }
     }
 
-    public Comment createComment(String comment) {
+    public synchronized Comment createComment(String comment) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
         long insertId = database.insert(MySQLiteHelper.TABLE_COMMENTS, null,
@@ -50,14 +75,14 @@ public class CommentsDataSource {
         return newComment;
     }
 
-    public void deleteComment(Comment comment) {
+    public synchronized void deleteComment(Comment comment) {
         long id = comment.getId();
         System.out.println("Comment deleted with id: " + id);
         database.delete(MySQLiteHelper.TABLE_COMMENTS, MySQLiteHelper.COLUMN_ID
                 + " = " + id, null);
     }
 
-    public List<Comment> getAllComments() {
+    public synchronized List<Comment> getAllComments() {
         List<Comment> comments = new ArrayList<Comment>();
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,

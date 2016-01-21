@@ -3,6 +3,7 @@ package org.indywidualni.dbproject.activity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -45,12 +46,15 @@ public class MainActivity extends AppCompatActivity {
         final Button admin = (Button) findViewById(R.id.button2);
 
         // TODO: Just an example. I have to figure it out
-        datasource = new CommentsDataSource(this);
-        datasource.open();
-        List<Comment> values = datasource.getAllComments();
-        for (Comment comment : values) {
-            // print object identifiers
-            Log.v(TAG, comment.toString());
+        datasource = CommentsDataSource.getInstance();
+        try {
+            datasource.open();
+            List<Comment> values = datasource.getAllComments();
+            for (Comment comment : values)
+                Log.v(TAG, comment.toString());
+            datasource.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         // create dialogs now, one of them is gonna be used soon
