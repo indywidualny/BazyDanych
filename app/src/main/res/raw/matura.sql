@@ -17,7 +17,7 @@ Ulica Varchar(30) NOT NULL ,
 Miasto Varchar(15) NOT NULL ,
 [Kod pocztowy] INTEGER NOT NULL ,
 Telefon INTEGER,
-Haslo VARCHAR(50)  NOT NULL);
+Haslo VARCHAR(40)  NOT NULL);
 
 CREATE TABLE Szkoly (ID INTEGER PRIMARY KEY   AUTOINCREMENT  NOT NULL  UNIQUE, --IDENTITY(1,1),
 [Nr Szkoly] INTEGER,
@@ -69,12 +69,12 @@ AVG(R.Wynik) AS [Sredni wynik], AVG(R.[Wynik proc]) AS [Sredni wynik %], SUM(R.Z
 FROM Egzaminy E JOIN Rezultaty R ON E.ID= R.Egzamin GROUP BY E.ID ORDER BY E.Rok, E.Przedmiot
 
 CREATE VIEW statUczen AS
-SELECT O.Pierwsze_imie, O.Nazwisko, COUNT(R.[Nr egzaminu]) AS [Ilosc egzaminow], COUNT(R.Zdany) AS [Zdane], AVG(R.[Wynik proc]) AS [Sredni wynik %]
+SELECT O.PESEL, O.Pierwsze_imie, O.Nazwisko, COUNT(R.[Nr egzaminu]) AS [Ilosc egzaminow], COUNT(R.Zdany) AS [Zdane], AVG(R.[Wynik proc]) AS [Sredni wynik %]
 FROM Osoby O, Uczniowie U JOIN Rezultaty R ON U.ID=R.Zdajacy where O.PESEL=U.PESEL GROUP BY U.ID
 
 CREATE VIEW statPrzedmiot AS
 SELECT E.Przedmiot, AVG(R.[Wynik proc]) AS [Sredni wynik %], COUNT(R.Zdajacy) AS [Ilosc egzaminow],
-(SElect COUNT(Zdany)from Rezultaty where Zdany=1) AS [Ilosc zaliczonych], (SElect COUNT(Zdany)from Rezultaty where Zdany=1)*100.0/COUNT(R.Zdajacy) AS [Zdawalnosc]
+(Select COUNT(Zdany)from Rezultaty where Zdany=1) AS [Ilosc zaliczonych], (SElect COUNT(Zdany)from Rezultaty where Zdany=1)*100.0/COUNT(R.Zdajacy) AS [Zdawalnosc]
 FROM Egzaminy E JOIN Rezultaty R ON E.ID= R.Egzamin GROUP BY E.Przedmiot
 
 CREATE VIEW statNauczyciel AS
@@ -107,7 +107,6 @@ AS
 	SET [Opis oceny]='Brak rozwiazania.'
 	WHERE [Opis oceny] IS NULL AND Punkty=0
 
-
 CREATE TRIGGER usuwanieNauczyciela ON Nauczyciele
 AFTER DELETE
 AS
@@ -119,14 +118,11 @@ AS
 	WHERE Ocenuajacy IN (SELECT ID FROM deleted)
 	PRINT('Pomyslnie usunieto nauczyciela.')
 
-
 CREATE TRIGGER usuwanieUcznia ON Uczniowie
 AFTER DELETE
 AS
 	DELETE FROM Rezultaty WHERE Zdajacy in (SELECT ID FROM deleted)
 	PRINT('Pomyslnie sunieto ucznia i jego rezultaty.')
-
-
 
 CREATE TRIGGER usuwanieEgzamin ON Egzaminy
 After DELETE
@@ -910,3 +906,373 @@ INSERT INTO [Rozklad Punktow] Values(607, 5, 5, "1- odpowiedz, 1- dane, 1- rysun
 INSERT INTO [Rozklad Punktow] Values(607, 6, 8, "1-zdefiniwanie tezy i zalozen, 7-dowód");
 INSERT INTO [Rozklad Punktow] Values(607, 1, 5, "1- odpowiedz, 1- dane, 3- obliczenia");
 
+-- Szkoly
+INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("I LO w Krakowie", "Krakow", "Ogrodowa 14", 13521, "Amanda Niziolek");
+INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("II LO w Krawowie", "Krakow", "Warszawska 3", 13534, "Klaudia Likier");
+INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("I Liceum Matematyczno-Informatyczne w Krakowie", "Krakow", "Warszawska 3", 13534, "Klaudia Likier");
+INSERT INTO Szkoly (Nazwa, [Nr Szkoly], Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("Technikum Informatyczne", 2, "Zamosc", "Krakowska 1", 17221, "Piotr Niedzwiadek");
+INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("III LO w Krakowie", "Krakow", "Lodowa 2", 13514, "Krzysztof Grawczyk");
+INSERT INTO Szkoly (Nazwa, [Nr Szkoly], Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("Technikum Budowlane", 1, "Krakow", "Ogrodowa 8", 13521, "Adrian Kowalski");
+INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("I LO w Poznaniu", "Poznan", "Horacego 14", 25361, "Aleksandra Fikus");
+INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("I LO w Warszawie", "Warszawa", "Ogrodowa 11", 31152, "Krzysztof Roman");
+INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("II LO w Warszawie", "Warszawa", "Ró¿ana 3", 31154, "Roman Aniol");
+INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("III LO w Warszawie", "Warszawa", "Klasztorna 11", 31172, "Klara Dom");
+INSERT INTO Szkoly (Nazwa, [Nr Szkoly], Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("Technikum Gastronomiczne w Poznaniu", 1, "Poznan", "Wodna 3", 25265, "Magdelena Kapusta");
+
+--Osoby
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(159624, "Anna", "Tetmajer", date("1966-03-11"), "Zamkowa", "Krakow", 13685, "e2e0f55b0b1530297c439a5066ac0723562eda06") ;
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(126842, "Zuzanna", "Lament", date("1996-02-21"), "Wilhelmia", "Krakow", 13355, "10fea34ec858803b5560ed710af8a371d0d5dd05") ;
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(137891, "Tomasz", "Lodowik", date("1970-11-01"), "Warszawska", "Krakow", 13534, "e2c3b00cebe8deb8f858ed0aebedefe5c4410060") ;
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(189145, "Krystian", "Samotnik", date("1993-05-07"), "Biala", "Poznan", 25115, "0f043dbba797a023317ac213218cbdc6b8fb4817") ;
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(185542, "Anna", "Rusalek", date("1991-04-16"), "Niecala", "Poznan", 25485, "6ade7c9881751c2cd5bf40fc5d707b6bfed9810d") ;
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(176583, "Filip", "Kowalski", date("1973-07-14"), "Fiolkowa", "Poznan", 25637, "1a45b52587e6b7beec0652498c72e2c4d71082d7") ;
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(179942, "Karolina", "Samotnik", date("1980-03-11"), "Kosciuszki", "Zamosc", 17215, "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8") ;
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Drugie_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(209561, "Franciszek", "Karol","Komos", date("2000-01-12"), "Lazurowa", "Zamosc", 17263, "96eccd072d5cd24e2cb2250ec34fc69e2542a4e1") ;
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(115472, "Renata", "Guzik", date("1959-02-12"), "Zimowa", "Warszawa", 31255, "6f9251cccaaeb8c79dbaf865b6ac18ebabaa06ab") ;
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(175986, "Beata", "Guzik", date("1996-09-30"), "Zimowa", "Warszawa", 31255, "080ec52cd229721b99bc27bbee72f23430b5401d") ;
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(118556, "Sandra", "Janik", date("1960-03-12"), "Rozana", "Warszawa", 31257, "24efdd62497228d037e53e7e0a0e2a1f01fa8106") ;
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(193651, "Bartlomiej", "Filar", date("1992-08-25"), "Zlota", "Warszawa", 31259, "41e34fb6279f7a5048d3eecd244f5010742954d4") ;
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(119235, "Ryszard", "Michalski", date("1998-08-16"), "Judy", "Warszawa", 31269, "6b1bcb0947073332c837542e887f1554fd17c639") ;
+INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(192856, "Luiza", "Szara", date("1996-04-21"), "Konwaliowa", "Warszawa", 31245, "549f81acdfe221bb7fa16f9b5f8287e439a8dde0") ;
+
+--Nauczyciele
+INSERT INTO Nauczyciele(PESEL, Staz, Szkola, Uprawnienia)  VALUES(159624, 20, 3, 1) ;
+INSERT INTO Nauczyciele(PESEL, Staz, Szkola, Uprawnienia) VALUES(137891, 15, null, 1) ;
+INSERT INTO Nauczyciele(PESEL, Staz, Szkola, Uprawnienia) VALUES(176583, 12, 7, 1) ;
+INSERT INTO Nauczyciele(PESEL, Staz, Szkola, Uprawnienia) VALUES(179942, 5, 4, 0) ;
+INSERT INTO Nauczyciele(PESEL, Staz, Szkola, Uprawnienia) VALUES(115472, 30, 9, 1) ;
+INSERT INTO Nauczyciele(PESEL, Staz, Szkola, Uprawnienia) VALUES(118556, 21, 10, 1) ;
+
+--Uczniowie
+INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia]) VALUES(209561, 4, 4, date("2015-09-01")) ;
+INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia], [Rok zakonczenia]) VALUES(126842, 1, 3, date("2011-09-01"), date("2015-04-30")) ;
+INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia]) VALUES(189145, 3, 7, date("2009-09-01")) ;
+INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia]) VALUES(185542, 3, 7, date("2007-09-01")) ;
+INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia]) VALUES(175986, 5, 9, date("2012-09-01")) ;
+INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia]) VALUES(193651, 5, 9, date("2008-09-01")) ;
+INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia]) VALUES(119235, 6, 10, date("2014-08-16")) ;
+INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia]) VALUES(192856, 6, 10, date("2012-09-01"));
+
+--Rezultaty
+INSERT INTO Rezultaty VALUES(25, 602, 2, 38, 95, 1);
+INSERT INTO Rezultaty VALUES(36, 604, 2, 11, 27.5, 0);
+INSERT INTO Rezultaty VALUES(136, 614, 2, 15, 37.5, 1);
+INSERT INTO Rezultaty VALUES(525, 607, 2, 30, 75, 1);
+INSERT INTO Rezultaty VALUES(21, 402, 3, 8, 20, 0);
+INSERT INTO Rezultaty VALUES(11, 403, 3, 42, 84, 1);
+INSERT INTO Rezultaty VALUES(34, 404, 3, 30, 75, 1);
+INSERT INTO Rezultaty VALUES(60, 502, 3, 31, 77.5, 1);
+INSERT INTO Rezultaty VALUES(20, 202, 4, 38, 95, 1);
+INSERT INTO Rezultaty VALUES(19, 203, 4, 34, 68, 1);
+INSERT INTO Rezultaty VALUES(32, 204, 4, 11, 27.5, 0);
+INSERT INTO Rezultaty VALUES(125, 214, 4, 15, 37.5, 1);
+INSERT INTO Rezultaty VALUES(14, 302, 6, 8, 20, 0);
+INSERT INTO Rezultaty VALUES(652, 303, 6, 42, 84, 1);
+INSERT INTO Rezultaty VALUES(7, 304, 6, 30, 75, 1);
+INSERT INTO Rezultaty VALUES(425, 402, 6, 31, 77.5, 1);
+
+--Punkty
+INSERT INTO Punkty Values(207, 1, 4, "brak rysunku", 5);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(207, 2, 4, 5);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(207, 3, 7, 5);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(207, 4, 6, 5);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(207, 5, 0, 5);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(207, 6, 8, 5);
+INSERT INTO Punkty Values(207, 1, 1, "Za dane", 5);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 1, 3, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 2, 6, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 3, 0, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 4, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 5, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 6, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 7, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 8, 0, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 9, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 10, 0, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 11, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 12, 6, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 13, 4, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 14, 0, 1);
+INSERT INTO Punkty Values(11, 15, 19, ", 12- zawarte informacje", 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 1, 3, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 2, 6, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 3, 0, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 4, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 5, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 6, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 7, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 8, 0, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 9, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 10, 0, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 11, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 12, 6, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 13, 4, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(652, 14, 0, 1);
+INSERT INTO Punkty Values(652, 15, 19, ", 12- zawarte informacje", 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 1, 3, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 2, 6, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 3, 0, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 4, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 5, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 6, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 7, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 8, 0, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 9, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 10, 0, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 11, 1, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 12, 0, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 13, 4, 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(19, 14, 0, 1);
+INSERT INTO Punkty Values(19, 15, 15, "1-poprawnosc jezykowa, 2- ortografia, 10- zawarte informacje", 1);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 25, 0, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 21, 2, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 22, 3, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 23, 3, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 24, 5, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 25, 7, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 21, 0, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 22, 3, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 23, 3, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 24, 0, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 25, 7, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 21, 2, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 22, 3, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 23, 3, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 24, 5, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 25, 0, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 21, 0, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 22, 0, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 23, 0, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 24, 0, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 25, 7, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 21, 2, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 22, 3, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 23, 3, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 24, 5, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 25, 0, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 21, 0, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 22, 0, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 23, 0, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 24, 0, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 1, 1, 6);
+INSERT INTO Punkty Values(60, 2, 0, "Zaznaczono odpowiedz C", 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 3, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 4, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 5, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 6, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 7, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 8, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 9, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 10, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 11, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 12, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 13, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 14, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 15, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 16, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 17, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 18, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(60, 19, 1, 6);
+INSERT INTO Punkty Values(60, 20, 0, "Zaznaczono odpowiedz B", 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 1, 1, 6);
+INSERT INTO Punkty Values(425, 2, 0, "Zaznaczono odpowiedz C", 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 3, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 4, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 5, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 6, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 7, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 8, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 9, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 10, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 11, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 12, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 13, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 14, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 15, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 16, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 17, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 18, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(425, 19, 1, 6);
+INSERT INTO Punkty Values(425, 20, 0, "Zaznaczono odpowiedz B", 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 1, 1, 6);
+INSERT INTO Punkty Values(25, 2, 0, "Zaznaczono odpowiedz C", 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 3, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 4, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 5, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 6, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 7, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 8, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 9, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 10, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 11, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 12, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 13, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 14, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 15, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 16, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 17, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 18, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(25, 19, 1, 6);
+INSERT INTO Punkty Values(25, 20, 0, "Zaznaczono odpowiedz B", 6);
+INSERT INTO Punkty Values(14, 1, 0, "Odpowiedz B", 3);
+INSERT INTO Punkty Values(14, 2, 0, "Odpowiedz C", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 3, 1, 3);
+INSERT INTO Punkty Values(14, 4, 0, "Odpowiedz A", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 5, 1, 3);
+INSERT INTO Punkty Values(14, 6, 0, "Odpowiedz D", 3);
+INSERT INTO Punkty Values(14, 7, 0, "Odpowiedz C", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 8, 1, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 9, 1, 3);
+INSERT INTO Punkty Values(14, 10, 0, "Odpowiedz D", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 11, 1, 3);
+INSERT INTO Punkty Values(14, 12, 0, "Odpowiedz A", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 13, 1, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 14, 1, 3);
+INSERT INTO Punkty Values(14, 15, 0, "Odpowiedz B", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 16, 0, 3);
+INSERT INTO Punkty Values(14, 17, 0, "Odpowiedz B", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 18, 1, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(14, 19, 0, 3);
+INSERT INTO Punkty Values(14, 20, 0, "Odpowiedz A", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 1, 1, 6);
+INSERT INTO Punkty Values(20, 2, 0, "Zaznaczono odpowiedz C", 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 3, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 4, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 5, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 6, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 7, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 8, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 9, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 10, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 11, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 12, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 13, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 14, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 15, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 16, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 17, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 18, 1, 6);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(20, 19, 1, 6);
+INSERT INTO Punkty Values(20, 20, 0, "Zaznaczono odpowiedz B", 6);
+INSERT INTO Punkty Values(21, 1, 0, "Odpowiedz B", 3);
+INSERT INTO Punkty Values(21, 2, 0, "Odpowiedz C", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 3, 1, 3);
+INSERT INTO Punkty Values(21, 4, 0, "Odpowiedz A", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 5, 1, 3);
+INSERT INTO Punkty Values(21, 6, 0, "Odpowiedz D", 3);
+INSERT INTO Punkty Values(21, 7, 0, "Odpowiedz C", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 8, 1, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 9, 1, 3);
+INSERT INTO Punkty Values(21, 10, 0, "Odpowiedz D", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 11, 1, 3);
+INSERT INTO Punkty Values(21, 12, 0, "Odpowiedz A", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 13, 1, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 14, 1, 3);
+INSERT INTO Punkty Values(21, 15, 0, "Odpowiedz B", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 16, 0, 3);
+INSERT INTO Punkty Values(21, 17, 0, "Odpowiedz B", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 18, 1, 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(21, 19, 0, 3);
+INSERT INTO Punkty Values(21, 20, 0, "Odpowiedz A", 3);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 1, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 2, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 3, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 4, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 5, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 6, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 7, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 8, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 9, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 10, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy)  Values(125, 11, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 12, 5, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 13, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 14, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 16, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 15, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(125, 17, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 1, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 2, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 3, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 4, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 5, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 6, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 7, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 8, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 9, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 10, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy)  Values(136, 11, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 12, 5, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 13, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 14, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 16, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 15, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(136, 17, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 1, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 2, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 3, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 4, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 5, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 6, 1, 2);
+INSERT INTO Punkty Values(36, 7, 1, " Zaznaczon0 odpowiedz C", 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 8, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 9, 1, 2);
+INSERT INTO Punkty Values(36, 10, 0, "Zaznaczono odpowiedz B", 2);
+INSERT INTO Punkty Values(36, 11, 2, Nie ma jednej definicji", 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 12, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 13, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 14, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 16, 0, 2);
+INSERT INTO Punkty Values(36, 15, 1, "Spelniono polowe wymagan", 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 17, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 1, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 2, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 3, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 4, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 5, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 6, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 7, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 8, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 9, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 10, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy)  Values(34, 11, 3, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 12, 5, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 13, 4, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 14, 2, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 16, 6, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 15, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(34, 17, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 1, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 2, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 3, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 4, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 5, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 6, 1, 2);
+INSERT INTO Punkty Values(32, 7, 1, " Zaznaczon0 odpowiedz C", 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 8, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 9, 1, 2);
+INSERT INTO Punkty Values(32, 10, 0, "Zaznaczono odpowiedz D", 2);
+INSERT INTO Punkty Values(32, 11, 2, Nie ma jednej definicji", 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 12, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 13, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 14, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 16, 0, 2);
+INSERT INTO Punkty Values(32, 15, 1, "Spelniono polowe wymagan", 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 17, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 1, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 2, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 3, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 4, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 5, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 6, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 7, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 8, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 9, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 10, 1, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy)  Values(7, 11, 3, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 12, 5, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 13, 4, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 14, 2, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 16, 6, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 15, 0, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 17, 0, 2);

@@ -129,20 +129,22 @@ public class MainActivity extends BaseActivity {
 
                 try {
                     if (passwordHash != null && passwordHash.equals(dataSource.getUserPassword(pesel))) {
-                        if (dataSource.isUserTeacher(pesel)) {
+                        Intent intent = new Intent(MainActivity.this, UserActivity.class);
+                        intent.putExtra("pesel", pesel);
+                        if (!dataSource.getIsUserTeacher(pesel)) {
                             Log.v(TAG, "student logged in");
+                            intent.putExtra("teacher", false);
+                            startActivity(intent);
                         } else {
                             Log.v(TAG, "teacher logged in");
+                            intent.putExtra("teacher", true);
+                            startActivity(intent);
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.wrong_password),
                                 Toast.LENGTH_SHORT).show();
                     }
                 } catch (SQLException e) {
-                    // TODO: testing
-                    final Intent intent = new Intent(getApplicationContext(), UserActivity.class);
-                    startActivity(intent);
-
                     Toast.makeText(getApplicationContext(), getString(R.string.wrong_user),
                             Toast.LENGTH_SHORT).show();
                     e.printStackTrace();

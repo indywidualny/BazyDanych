@@ -1,16 +1,11 @@
 package org.indywidualni.dbproject.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.indywidualni.dbproject.MyApplication;
-import org.indywidualni.dbproject.models.Uczen;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Krzysztof Grabowski on 20.01.16.
@@ -81,7 +76,7 @@ public class MaturaDataSource {
         return password;
     }
 
-    public synchronized boolean isUserTeacher(String pesel) throws SQLException {
+    public synchronized boolean getIsUserTeacher(String pesel) throws SQLException {
         open();
         Cursor cursor = null;
         boolean isTeacher = false;
@@ -99,6 +94,11 @@ public class MaturaDataSource {
 
         close();
         return isTeacher;
+    }
+
+    public synchronized void getStudentResults(String pesel) throws SQLException {
+        open();
+        close();
     }
 /*    public Uczen createComment(String comment) {
         ContentValues values = new ContentValues();

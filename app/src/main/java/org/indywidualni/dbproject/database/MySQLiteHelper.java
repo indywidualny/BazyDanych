@@ -14,7 +14,7 @@ import org.indywidualni.dbproject.util.FileOperation;
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "matura.db";
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 1;
     private Context context;
 
     public MySQLiteHelper(Context context) {

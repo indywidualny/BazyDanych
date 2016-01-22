@@ -2,6 +2,7 @@ package org.indywidualni.dbproject.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,6 +32,19 @@ public class UserActivity extends BaseActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
+        // load the right fragment
+        String pesel = "";
+        boolean isTeacher = false;
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            pesel = extras.getString("pesel");
+            isTeacher = extras.getBoolean("teacher");
+        }
+
+        Log.v(TAG, "PESEL: " + pesel + "  isTeacher: " + isTeacher);
+
+        // toolbar spinner
         Spinner spinner = (Spinner) findViewById(R.id.spinner_nav);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -40,6 +54,7 @@ public class UserActivity extends BaseActivity {
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
     }
 
     @Override

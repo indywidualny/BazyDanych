@@ -31,6 +31,7 @@ public class AdminActivity extends BaseActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
+        // toolbar spinner
         Spinner spinner = (Spinner) findViewById(R.id.spinner_nav);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
