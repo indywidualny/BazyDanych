@@ -21,7 +21,7 @@ public class FileOperation {
         StringBuilder text = new StringBuilder();
         try {
             while ((line = buffReader.readLine()) != null)
-                text.append(line);
+                text.append(line).append(" ");
         } catch (IOException e) {
             return " ";
         }

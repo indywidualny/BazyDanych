@@ -1,11 +1,8 @@
 package org.indywidualni.dbproject.database;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-
-import org.indywidualni.dbproject.MyApplication;
 
 /**
  * Created by Krzysztof Grabowski on 20.01.16.
@@ -14,14 +11,11 @@ import org.indywidualni.dbproject.MyApplication;
 public class MaturaDataSource {
 
     private static volatile MaturaDataSource instance;
-    private static Context context;
 
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
 
-    private MaturaDataSource() {
-        context = MyApplication.getContextOfApplication();
-    }
+    private MaturaDataSource() {}
 
     public static MaturaDataSource getInstance() {
         if (instance == null) {
@@ -35,7 +29,7 @@ public class MaturaDataSource {
 
     private void open() throws SQLException {
         if (dbHelper == null) {
-            dbHelper = new MySQLiteHelper(context);
+            dbHelper = new MySQLiteHelper();
             database = dbHelper.getWritableDatabase();
         }
     }

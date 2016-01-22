@@ -52,6 +52,7 @@ public class MainActivity extends BaseActivity {
             dataSource.emptyConnection();
         } catch (SQLException e) {
             Log.e(TAG, "database connection problem, not good");
+            e.printStackTrace();
         }
 
         // bind buttons to the layout
