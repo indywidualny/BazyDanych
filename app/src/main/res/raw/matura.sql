@@ -69,7 +69,7 @@ AVG(R.Wynik) AS [Sredni wynik], AVG(R.[Wynik proc]) AS [Sredni wynik %], SUM(R.Z
 FROM Egzaminy E JOIN Rezultaty R ON E.ID= R.Egzamin GROUP BY E.ID ORDER BY E.Rok, E.Przedmiot;
 
 CREATE VIEW statUczen AS
-SELECT O.PESEL, O.Pierwsze_imie, O.Nazwisko, COUNT(R.[Nr egzaminu]) AS [Ilosc egzaminow], COUNT(R.Zdany) AS [Zdane], AVG(R.[Wynik proc]) AS [Sredni wynik %]
+SELECT O.PESEL, O.Pierwsze_Imie, O.Nazwisko, COUNT(R.[Nr egzaminu]) AS [Ilosc egzaminow], COUNT(R.Zdany) AS [Zdane], AVG(R.[Wynik proc]) AS [Sredni wynik %]
 FROM Osoby O, Uczniowie U JOIN Rezultaty R ON U.ID=R.Zdajacy where O.PESEL=U.PESEL GROUP BY U.ID;
 
 CREATE VIEW statPrzedmiot AS

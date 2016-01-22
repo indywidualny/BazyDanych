@@ -4,6 +4,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.indywidualni.dbproject.models.StudentSummary;
+
 /**
  * Created by Krzysztof Grabowski on 20.01.16.
  * Singleton pattern
@@ -87,9 +89,33 @@ public class MaturaDataSource {
         return isTeacher;
     }
 
-    public synchronized void getStudentResults(String pesel) throws SQLException {
+    public synchronized StudentSummary getStudentSummary(String pesel) throws SQLException {
         open();
+        Cursor cursor = null;
+        StudentSummary studentSummary = null;
+
+        try {
+            cursor = database.rawQuery("Select * from statUczen where PESEL=?", new String[] {pesel});
+            if(cursor.getCount() > 0) {
+                // retrieve the data to my custom model
+                cursor.moveToFirst();
+                int peselDatabase = cursor.getInt(cursor.getColumnIndex("PESEL"));
+                String firstName = cursor.getString(cursor.getColumnIndex("Pierwsze_Imie"));
+                String surname = cursor.getString(cursor.getColumnIndex("Nazwisko"));
+                int numberOfExams = cursor.getInt(cursor.getColumnIndex("Ilosc egzaminow"));
+                int passedExams = cursor.getInt(cursor.getColumnIndex("Zdane"));
+                float averageResult = cursor.getFloat(cursor.getColumnIndex("Sredni wynik %"));
+
+                studentSummary = new StudentSummary(peselDatabase, firstName, surname,
+                        numberOfExams, passedExams, averageResult);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
         close();
+        return studentSummary;
     }
 /*    public Uczen createComment(String comment) {
         ContentValues values = new ContentValues();

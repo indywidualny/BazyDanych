@@ -15,7 +15,7 @@ import org.indywidualni.dbproject.util.FileOperation;
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "matura.db";
-    private static final int DATABASE_VERSION = 89;
+    private static final int DATABASE_VERSION = 93;
     private static final Context context;
 
     static {
@@ -52,6 +52,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS Punkty;");
         db.execSQL("DROP TABLE IF EXISTS Szkoly;");
         db.execSQL("DROP TABLE IF EXISTS Uczniowie;");
+        db.execSQL("DROP VIEW IF EXISTS statEgzamin;");
+        db.execSQL("DROP VIEW IF EXISTS statUczen;");
+        db.execSQL("DROP VIEW IF EXISTS statPrzedmiot;");
+        db.execSQL("DROP VIEW IF EXISTS statNauczyciel;");
+        db.execSQL("DROP VIEW IF EXISTS statSzkola;");
+        db.execSQL("DROP VIEW IF EXISTS statMiasto;");
         onCreate(db);
     }
 

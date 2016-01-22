@@ -14,6 +14,8 @@ import org.indywidualni.dbproject.R;
  */
 public class AdminFragment extends Fragment {
 
+    private static final String TAG = AdminFragment.class.getSimpleName();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_admin, container, false);
@@ -21,6 +23,8 @@ public class AdminFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         Toast.makeText(getActivity(), getString(R.string.admin_logged_in),
                 Toast.LENGTH_SHORT).show();
     }

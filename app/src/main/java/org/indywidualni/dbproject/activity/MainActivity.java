@@ -46,8 +46,8 @@ public class MainActivity extends BaseActivity {
         /** Let's instantiate a database helper. */
         dataSource = MaturaDataSource.getInstance();
 
-        /** Just to test connection and create/upgrade database
-         *  in order to skip this part during next data retrieval.
+        /** Create/upgrade database now in order to skip this part
+         *  during the next data retrieval.
          */
         new PrepareDatabase().execute();
 

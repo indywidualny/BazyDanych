@@ -2,6 +2,7 @@ package org.indywidualni.dbproject.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,7 +13,7 @@ import org.indywidualni.dbproject.R;
 /**
  * Created by Krzysztof Grabowski on 21.01.16.
  */
-public class AdminActivity extends BaseActivity {
+public class AdminActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = AdminActivity.class.getSimpleName();
 
@@ -46,8 +47,11 @@ public class AdminActivity extends BaseActivity {
     @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
-        super.onItemSelected(parent, view, pos, id);
+        Log.v(TAG, "Spinner position: " + pos);
+    }
 
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
     }
 
 }

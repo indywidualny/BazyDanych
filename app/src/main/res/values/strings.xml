@@ -19,7 +19,7 @@
     <string name="hello_student">Witaj uczniu!</string>
 
     <string-array name="planets_array">
-        <item>Podsumowanie</item>
+        <item>Podsumowanie </item>
         <item>Venus</item>
         <item>Earth</item>
         <item>Mars</item>
@@ -27,6 +27,13 @@
         <item>Saturn</item>
         <item>Uranus</item>
         <item>Neptune</item>
+    </string-array>
+
+    <string-array name="student_array">
+        <item>Podsumowanie </item>
+        <item>Egzaminy</item>
+        <item>Statystyki</item>
+        <item>Personalia</item>
     </string-array>
 
 </resources>

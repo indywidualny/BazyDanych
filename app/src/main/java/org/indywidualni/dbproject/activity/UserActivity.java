@@ -3,20 +3,20 @@ package org.indywidualni.dbproject.activity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.indywidualni.dbproject.R;
+import org.indywidualni.dbproject.fragment.StudentFragment;
+import org.indywidualni.dbproject.fragment.TeacherFragment;
 
 /**
  * Created by Krzysztof Grabowski on 22.01.16.
  */
 public class UserActivity extends BaseActivity {
 
-    private static final String TAG = AdminActivity.class.getSimpleName();
+    private static final String TAG = UserActivity.class.getSimpleName();
+    public static String pesel;
+    public static boolean isTeacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,42 +34,24 @@ public class UserActivity extends BaseActivity {
         }
 
         // get string extras
-        String pesel = "";
-        boolean isTeacher = false;
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             pesel = extras.getString("pesel");
             isTeacher = extras.getBoolean("teacher");
         }
 
-        // debug line
-        Log.v(TAG, "PESEL: " + pesel + "  isTeacher: " + isTeacher);
+        Log.v(TAG, "PESEL: " + pesel + ", isTeacher: " + isTeacher);
 
-        // display a greeting toast
-        if (isTeacher)
+        // display a greeting toast and load the right fragment
+        if (isTeacher) {
             Toast.makeText(this, getString(R.string.hello_teacher), Toast.LENGTH_SHORT).show();
-        else
+            getFragmentManager().beginTransaction().replace(R.id.fragment,
+                    new TeacherFragment()).commit();
+        } else {
             Toast.makeText(this, getString(R.string.hello_student), Toast.LENGTH_SHORT).show();
-
-        // toolbar spinner
-        Spinner spinner = (Spinner) findViewById(R.id.spinner_nav);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.planets_array, R.layout.spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
-
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        super.onItemSelected(parent, view, pos, id);
-
+            getFragmentManager().beginTransaction().replace(R.id.fragment,
+                    new StudentFragment()).commit();
+        }
     }
 
 }
