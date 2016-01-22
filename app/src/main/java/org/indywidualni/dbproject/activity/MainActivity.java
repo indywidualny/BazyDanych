@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +45,15 @@ public class MainActivity extends BaseActivity {
         /** Let's instantiate a database helper. */
         dataSource = MaturaDataSource.getInstance();
 
+        /** Just to test connection and create/upgrade database
+         *  in order to skip this part during next data retrieval.
+         */
+        try {
+            dataSource.emptyConnection();
+        } catch (SQLException e) {
+            Log.e(TAG, "database connection problem, not good");
+        }
+
         // bind buttons to the layout
         final Button user = (Button) findViewById(R.id.button1);
         final Button admin = (Button) findViewById(R.id.button2);
@@ -57,6 +67,10 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 alertUserDialog.show();
+                alertUserDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                        .setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+                alertUserDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                        .setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
             }
         });
 
@@ -65,6 +79,10 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 alertAdminDialog.show();
+                alertAdminDialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                        .setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+                alertAdminDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                        .setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
             }
         });
     }
@@ -72,9 +90,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "OnDestroy: Close database connection");
-        if (dataSource != null)
-            dataSource.close();
     }
 
     @Override
@@ -113,7 +128,6 @@ public class MainActivity extends BaseActivity {
                 }
 
                 try {
-                    dataSource.open();
                     if (passwordHash != null && passwordHash.equals(dataSource.getUserPassword(pesel))) {
                         if (dataSource.isUserTeacher(pesel)) {
                             Log.v(TAG, "student logged in");
@@ -132,8 +146,6 @@ public class MainActivity extends BaseActivity {
                     Toast.makeText(getApplicationContext(), getString(R.string.wrong_user),
                             Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
-                } finally {
-                    dataSource.close();
                 }
             }
         });

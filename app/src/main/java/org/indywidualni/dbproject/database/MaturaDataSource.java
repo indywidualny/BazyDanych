@@ -24,7 +24,7 @@ public class MaturaDataSource {
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
 
-    private MaturaDataSource() throws SQLException {
+    private MaturaDataSource() {
         context = MyApplication.getContextOfApplication();
     }
 
@@ -38,14 +38,16 @@ public class MaturaDataSource {
         return instance;
     }
 
-    public synchronized void open() throws SQLException {
-        dbHelper = new MySQLiteHelper(context);
-        database = dbHelper.getWritableDatabase();
+    private void open() throws SQLException {
+        if (dbHelper == null) {
+            dbHelper = new MySQLiteHelper(context);
+            database = dbHelper.getWritableDatabase();
+        }
     }
 
-    // synchronize it to class
-    public synchronized void close() {
+    private void close() {
         if (database != null) {
+            // probably not needed because of synchronization
             //noinspection StatementWithEmptyBody
             while (database.isDbLockedByCurrentThread()) {}
             dbHelper.close();
@@ -54,7 +56,13 @@ public class MaturaDataSource {
         }
     }
 
-    public String getUserPassword(String pesel) {
+    public synchronized void emptyConnection() throws SQLException {
+        open();
+        close();
+    }
+
+    public synchronized String getUserPassword(String pesel) throws SQLException {
+        open();
         Cursor cursor = null;
         String password = "";
 
@@ -69,10 +77,12 @@ public class MaturaDataSource {
                 cursor.close();
         }
 
+        close();
         return password;
     }
 
-    public boolean isUserTeacher(String pesel) {
+    public synchronized boolean isUserTeacher(String pesel) throws SQLException {
+        open();
         Cursor cursor = null;
         boolean isTeacher = false;
 
@@ -87,6 +97,7 @@ public class MaturaDataSource {
                 cursor.close();
         }
 
+        close();
         return isTeacher;
     }
 /*    public Uczen createComment(String comment) {
