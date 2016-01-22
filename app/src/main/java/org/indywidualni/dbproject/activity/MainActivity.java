@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +25,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Created by Krzysztof Grabowski on 13.12.15.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private MaturaDataSource dataSource;
@@ -41,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         // app toolbar with actionbar support
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        /** Let's instantiate a database helper. */
+        dataSource = MaturaDataSource.getInstance();
 
         // bind buttons to the layout
         final Button user = (Button) findViewById(R.id.button1);
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("InflateParams")
     private AlertDialog createUserLoginDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
-        final View view = inflater.inflate(R.layout.user_login_dialog, null);
+        final View view = inflater.inflate(R.layout.dialog_login_user, null);
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setView(view);
@@ -96,20 +98,42 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 String pesel = user.getText().toString();
                 String password = pass.getText().toString();
+                String passwordHash = null;
 
                 try {
-                    dataSource = MaturaDataSource.getInstance();
-                    final String realPass = dataSource.getUserPassword(pesel);
-                    if (password.equals(realPass)) {
-                        Log.v(TAG, "user logged in");
+                    passwordHash = AeSimpleSHA1.SHA1(password);
+                } catch (NoSuchAlgorithmException e) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_such_algorithm),
+                            Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.unsupported_encoding),
+                            Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+
+                try {
+                    dataSource.open();
+                    if (passwordHash != null && passwordHash.equals(dataSource.getUserPassword(pesel))) {
+                        if (dataSource.isUserTeacher(pesel)) {
+                            Log.v(TAG, "student logged in");
+                        } else {
+                            Log.v(TAG, "teacher logged in");
+                        }
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.wrong_password),
                                 Toast.LENGTH_SHORT).show();
                     }
                 } catch (SQLException e) {
+                    // TODO: testing
+                    final Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                    startActivity(intent);
+
                     Toast.makeText(getApplicationContext(), getString(R.string.wrong_user),
                             Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
+                } finally {
+                    dataSource.close();
                 }
             }
         });
@@ -128,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("InflateParams")
     private AlertDialog createAdminLoginDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
-        final View view = inflater.inflate(R.layout.admin_login_dialog, null);
+        final View view = inflater.inflate(R.layout.dialog_login_admin, null);
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setView(view);
@@ -154,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (passwordHash != null && passwordHash.equals(MyApplication.getAdminPassword())) {
                     Log.v(TAG, "admin logged in");
-                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                    final Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), getString(R.string.wrong_password),

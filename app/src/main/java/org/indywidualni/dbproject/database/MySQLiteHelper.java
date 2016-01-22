@@ -13,22 +13,8 @@ import org.indywidualni.dbproject.util.FileOperation;
  */
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
-    // TODO: Just an example. I have to figure it out
-
-    public static final String TABLE_EGZAMINY = "Egzaminy";
-    public static final String TABLE_NAUCZYCIELE = "Nauczyciele";
-    public static final String TABLE_OSOBY = "Osoby";
-    public static final String TABLE_ROZKLAD_PUNKTOW = "[Rozklad Punktow]";
-    public static final String TABLE_REZULTATY = "Rezultaty";
-    public static final String TABLE_PUNKTY = "Punkty";
-    public static final String TABLE_SZKOLY = "Szkoly";
-    public static final String TABLE_UCZNIOWIE = "Uczniowie";
-
-    public static final String COLUMN_ID = "_id";
-
     private static final String DATABASE_NAME = "matura.db";
-    private static final int DATABASE_VERSION = 11;
-
+    private static final int DATABASE_VERSION = 12;
     private Context context;
 
     public MySQLiteHelper(Context context) {
@@ -48,14 +34,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         Log.w(MySQLiteHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EGZAMINY);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAUCZYCIELE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OSOBY);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROZKLAD_PUNKTOW);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REZULTATY);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PUNKTY);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SZKOLY);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_UCZNIOWIE);
+        db.execSQL("DROP TABLE IF EXISTS Egzaminy");
+        db.execSQL("DROP TABLE IF EXISTS Nauczyciele");
+        db.execSQL("DROP TABLE IF EXISTS Osoby");
+        db.execSQL("DROP TABLE IF EXISTS [Rozklad Punktow]");
+        db.execSQL("DROP TABLE IF EXISTS Rezultaty");
+        db.execSQL("DROP TABLE IF EXISTS Punkty");
+        db.execSQL("DROP TABLE IF EXISTS Szkoly");
+        db.execSQL("DROP TABLE IF EXISTS Uczniowie");
         onCreate(db);
     }
 

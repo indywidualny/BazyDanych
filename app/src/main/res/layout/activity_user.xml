@@ -13,7 +13,7 @@
         />
 
     <fragment
-        android:name="org.indywidualni.dbproject.fragment.AdminFragment"
+        android:name="org.indywidualni.dbproject.fragment.PlaceholderFragment"
         android:id="@+id/fragment"
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"

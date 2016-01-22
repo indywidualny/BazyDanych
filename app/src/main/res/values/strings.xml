@@ -11,5 +11,9 @@
     <string name="no_such_algorithm">Brak algorytmu</string>
     <string name="wrong_password">Niepoprawne hasło</string>
     <string name="wrong_user">Niepoprawne dane</string>
+    <string name="project_github">GitHub projektu</string>
+    <string name="admin_logged_in">Zalogowano jako administrator</string>
+    <string name="loading_view">Ładuję odpowiedni widok</string>
+    <string name="github_url">https://github.com/indywidualny/BazyDanych</string>
 
 </resources>

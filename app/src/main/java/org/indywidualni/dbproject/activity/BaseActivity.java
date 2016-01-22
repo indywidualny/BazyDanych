@@ -1,0 +1,36 @@
+package org.indywidualni.dbproject.activity;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import org.indywidualni.dbproject.R;
+
+/**
+ * Created by Krzysztof Grabowski on 22.01.16.
+ */
+public class BaseActivity extends AppCompatActivity {
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_generic, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.project_github:
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(getString(R.string.github_url))));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+}

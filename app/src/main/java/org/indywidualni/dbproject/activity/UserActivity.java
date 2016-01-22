@@ -6,16 +6,16 @@ import android.support.v7.widget.Toolbar;
 import org.indywidualni.dbproject.R;
 
 /**
- * Created by Krzysztof Grabowski on 21.01.16.
+ * Created by Krzysztof Grabowski on 22.01.16.
  */
-public class AdminActivity extends BaseActivity {
+public class UserActivity extends BaseActivity {
 
     private static final String TAG = AdminActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
+        setContentView(R.layout.activity_user);
 
         // app toolbar with actionbar support
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
