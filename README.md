@@ -2,20 +2,23 @@
 
 ##Hasła
 
-159624, "Poziom3"<br />
+<b>Uczniowie</b>
 126842, "Nadziana"<br />
-137891, "Nicosc70"<br />
 189145, "Piknik"<br />
 185542, "KozaAda"<br />
-176583, "Fizyka73"<br />
-179942, "password"<br />
 209561, "Slonce"<br />
-115472, "GwiazdyN"<br />
 175986, "Ramki5"<br />
-118556, "SuperNowa"<br />
 193651, "AnaMari"<br />
 119235, "Cokolwiek98"<br />
 192856, "Nigdy21"<br /><br />
+
+<b>Nauczyciele</b></br >
+159624, "Poziom3"<br />
+137891, "Nicosc70"<br />
+176583, "Fizyka73"<br />
+179942, "password"<br />
+115472, "GwiazdyN"<br />
+118556, "SuperNowa"<br /><br />
 
 159624 e2e0f55b0b1530297c439a5066ac0723562eda06<br />
 126842 10fea34ec858803b5560ed710af8a371d0d5dd05<br />
