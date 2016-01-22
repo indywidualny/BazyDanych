@@ -21,8 +21,8 @@ public class PlaceholderFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Toast.makeText(getActivity(), getString(R.string.loading_view),
-                Toast.LENGTH_SHORT).show();
+/*        Toast.makeText(getActivity(), getString(R.string.loading_view),
+                Toast.LENGTH_SHORT).show();*/
     }
 
 }

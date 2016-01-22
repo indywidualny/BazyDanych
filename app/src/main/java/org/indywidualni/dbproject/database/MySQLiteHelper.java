@@ -15,7 +15,7 @@ import org.indywidualni.dbproject.util.FileOperation;
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "matura.db";
-    private static final int DATABASE_VERSION = 77;
+    private static final int DATABASE_VERSION = 89;
     private static final Context context;
 
     static {
@@ -32,9 +32,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         String databaseCreate = FileOperation.readRawTextFile(context, R.raw.matura);
         final String[] split = databaseCreate.split(";");
         for (String query : split) {
-            Log.v("SQL", query + ";");
-            database.execSQL(query + ";");
-
+            if (query.length() > 1) {
+                //Log.v("SQL", query + ";");
+                database.execSQL(query + ";");
+            }
         }
     }
 

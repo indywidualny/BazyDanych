@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.SQLException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
@@ -48,12 +49,7 @@ public class MainActivity extends BaseActivity {
         /** Just to test connection and create/upgrade database
          *  in order to skip this part during next data retrieval.
          */
-        try {
-            dataSource.emptyConnection();
-        } catch (SQLException e) {
-            Log.e(TAG, "database connection problem, not good");
-            e.printStackTrace();
-        }
+        new PrepareDatabase().execute();
 
         // bind buttons to the layout
         final Button user = (Button) findViewById(R.id.button1);
@@ -96,6 +92,24 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    /** Database creation takes some time and should not be done on UI thread.
+     *  We need an AsyncTask to do it properly.
+     */
+    private class PrepareDatabase extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            try {
+                dataSource.emptyConnection();
+            } catch (SQLException e) {
+                Log.e(TAG, "database connection problem, not good");
+                e.printStackTrace();
+            }
+            return null;
+        }
+
     }
 
     @SuppressLint("InflateParams")

@@ -53,7 +53,7 @@ CREATE TABLE Punkty ([Nr egzaminu] INTEGER NOT NULL CONSTRAINT FK_REZULT REFEREN
     [Nr zadania] INTEGER NOT NULL ,
     Punkty FLOAT NOT NULL DEFAULT 0,
     [Opis oceny] TEXT,
-    Ocenuajacy INTEGER NOT NULL CONSTRAINT FK_OCEN REFERENCES NAUCZYCIELE(ID),
+    Oceniajacy INTEGER NOT NULL CONSTRAINT FK_OCEN REFERENCES NAUCZYCIELE(ID),
     PRIMARY KEY ([Nr egzaminu], [Nr zadania]));
 
 CREATE TABLE [Rozklad Punktow] (Egzamin INTEGER NOT NULL CONSTRAINT FK_EGZ REFERENCES EGZAMINY(ID) ON UPDATE CASCADE,
@@ -498,62 +498,62 @@ INSERT INTO [Rozklad Punktow] Values(614, 10, 1, "Odpowiedz A");
 INSERT INTO [Rozklad Punktow] Values(202, 25, 7, "1 - dane i szukane, 2-rysunek, 1- poprawna odpowiedz, 2- dobry tok rozumowania, 1- brak b³êdów rachunkowych");
 INSERT INTO [Rozklad Punktow] Values(202, 21, 2, "1-odpowiedz,dane i szukane, 1-obliczenia");
 INSERT INTO [Rozklad Punktow] Values(202, 22, 3, "Po 1 za zaznacznie prawidlowego wyniku");
-INSERT INTO [Rozklad Punktow] Values(202, 23, 3, "Po 1 za dobry wynik w ka¿dym podpunkcie");
+INSERT INTO [Rozklad Punktow] Values(202, 23, 3, "Po 1 za dobry wynik w kazdym podpunkcie");
 INSERT INTO [Rozklad Punktow] Values(202, 24, 5, "2- podpunkt a, 3- podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(302, 25, 7, "1 - dane i szukane, 2-rysunek, 1- poprawna odpowiedz, 2- dobry tok rozumowania, 1- brak b³êdów rachunkowych");
 INSERT INTO [Rozklad Punktow] Values(302, 21, 2, "1-odpowiedz,dane i szukane, 1-obliczenia");
 INSERT INTO [Rozklad Punktow] Values(302, 22, 3, "Po 1 za zaznacznie prawidlowego wyniku");
-INSERT INTO [Rozklad Punktow] Values(302, 23, 3, "Po 1 za dobry wynik w ka¿dym podpunkcie");
+INSERT INTO [Rozklad Punktow] Values(302, 23, 3, "Po 1 za dobry wynik w kazdym podpunkcie");
 INSERT INTO [Rozklad Punktow] Values(302, 24, 5, "2- podpunkt a, 3- podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(402, 25, 7, "1 - dane i szukane, 2-rysunek, 1- poprawna odpowiedz, 2- dobry tok rozumowania, 1- brak b³êdów rachunkowych");
 INSERT INTO [Rozklad Punktow] Values(402, 21, 2, "1-odpowiedz,dane i szukane, 1-obliczenia");
 INSERT INTO [Rozklad Punktow] Values(402, 22, 3, "Po 1 za zaznacznie prawidlowego wyniku");
-INSERT INTO [Rozklad Punktow] Values(402, 23, 3, "Po 1 za dobry wynik w ka¿dym podpunkcie");
+INSERT INTO [Rozklad Punktow] Values(402, 23, 3, "Po 1 za dobry wynik w kazdym podpunkcie");
 INSERT INTO [Rozklad Punktow] Values(402, 24, 5, "2- podpunkt a, 3- podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(502, 25, 7, "1 - dane i szukane, 2-rysunek, 1- poprawna odpowiedz, 2- dobry tok rozumowania, 1- brak b³êdów rachunkowych");
 INSERT INTO [Rozklad Punktow] Values(502, 21, 2, "1-odpowiedz,dane i szukane, 1-obliczenia");
 INSERT INTO [Rozklad Punktow] Values(502, 22, 3, "Po 1 za zaznacznie prawidlowego wyniku");
-INSERT INTO [Rozklad Punktow] Values(502, 23, 3, "Po 1 za dobry wynik w ka¿dym podpunkcie");
+INSERT INTO [Rozklad Punktow] Values(502, 23, 3, "Po 1 za dobry wynik w kazdym podpunkcie");
 INSERT INTO [Rozklad Punktow] Values(502, 24, 5, "2- podpunkt a, 3- podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(602, 25, 7, "1 - dane i szukane, 2-rysunek, 1- poprawna odpowiedz, 2- dobry tok rozumowania, 1- brak b³êdów rachunkowych");
 INSERT INTO [Rozklad Punktow] Values(602, 21, 2, "1-odpowiedz,dane i szukane, 1-obliczenia");
 INSERT INTO [Rozklad Punktow] Values(602, 22, 3, "Po 1 za zaznacznie prawidlowego wyniku");
-INSERT INTO [Rozklad Punktow] Values(602, 23, 3, "Po 1 za dobry wynik w ka¿dym podpunkcie");
+INSERT INTO [Rozklad Punktow] Values(602, 23, 3, "Po 1 za dobry wynik w kazdym podpunkcie");
 INSERT INTO [Rozklad Punktow] Values(602, 24, 5, "2- podpunkt a, 3- podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(102, 25, 7, "1 - dane i szukane, 2-rysunek, 1- poprawna odpowiedz, 2- dobry tok rozumowania, 1- brak b³êdów rachunkowych");
 INSERT INTO [Rozklad Punktow] Values(102, 21, 2, "1-odpowiedz,dane i szukane, 1-obliczenia");
 INSERT INTO [Rozklad Punktow] Values(102, 22, 3, "Po 1 za zaznacznie prawidlowego wyniku");
-INSERT INTO [Rozklad Punktow] Values(102, 23, 3, "Po 1 za dobry wynik w ka¿dym podpunkcie");
+INSERT INTO [Rozklad Punktow] Values(102, 23, 3, "Po 1 za dobry wynik w kazdym podpunkcie");
 INSERT INTO [Rozklad Punktow] Values(102, 24, 5, "2- podpunkt a, 3- podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(212, 25, 7, "1 - dane i szukane, 2-rysunek, 1- poprawna odpowiedz, 2- dobry tok rozumowania, 1- brak b³êdów rachunkowych");
 INSERT INTO [Rozklad Punktow] Values(212, 21, 2, "1-odpowiedz,dane i szukane, 1-obliczenia");
 INSERT INTO [Rozklad Punktow] Values(212, 22, 3, "Po 1 za zaznacznie prawidlowego wyniku");
-INSERT INTO [Rozklad Punktow] Values(212, 23, 3, "Po 1 za dobry wynik w ka¿dym podpunkcie");
+INSERT INTO [Rozklad Punktow] Values(212, 23, 3, "Po 1 za dobry wynik w kazdym podpunkcie");
 INSERT INTO [Rozklad Punktow] Values(212, 24, 5, "2- podpunkt a, 3- podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(312, 25, 7, "1 - dane i szukane, 2-rysunek, 1- poprawna odpowiedz, 2- dobry tok rozumowania, 1- brak b³êdów rachunkowych");
 INSERT INTO [Rozklad Punktow] Values(312, 21, 2, "1-odpowiedz,dane i szukane, 1-obliczenia");
 INSERT INTO [Rozklad Punktow] Values(312, 22, 3, "Po 1 za zaznacznie prawidlowego wyniku");
-INSERT INTO [Rozklad Punktow] Values(312, 23, 3, "Po 1 za dobry wynik w ka¿dym podpunkcie");
+INSERT INTO [Rozklad Punktow] Values(312, 23, 3, "Po 1 za dobry wynik w kazdym podpunkcie");
 INSERT INTO [Rozklad Punktow] Values(312, 24, 5, "2- podpunkt a, 3- podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(412, 25, 7, "1 - dane i szukane, 2-rysunek, 1- poprawna odpowiedz, 2- dobry tok rozumowania, 1- brak b³êdów rachunkowych");
 INSERT INTO [Rozklad Punktow] Values(412, 21, 2, "1-odpowiedz,dane i szukane, 1-obliczenia");
 INSERT INTO [Rozklad Punktow] Values(412, 22, 3, "Po 1 za zaznacznie prawidlowego wyniku");
-INSERT INTO [Rozklad Punktow] Values(412, 23, 3, "Po 1 za dobry wynik w ka¿dym podpunkcie");
+INSERT INTO [Rozklad Punktow] Values(412, 23, 3, "Po 1 za dobry wynik w kazdym podpunkcie");
 INSERT INTO [Rozklad Punktow] Values(412, 24, 5, "2- podpunkt a, 3- podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(512, 25, 7, "1 - dane i szukane, 2-rysunek, 1- poprawna odpowiedz, 2- dobry tok rozumowania, 1- brak b³êdów rachunkowych");
 INSERT INTO [Rozklad Punktow] Values(512, 21, 2, "1-odpowiedz,dane i szukane, 1-obliczenia");
 INSERT INTO [Rozklad Punktow] Values(512, 22, 3, "Po 1 za zaznacznie prawidlowego wyniku");
-INSERT INTO [Rozklad Punktow] Values(512, 23, 3, "Po 1 za dobry wynik w ka¿dym podpunkcie");
+INSERT INTO [Rozklad Punktow] Values(512, 23, 3, "Po 1 za dobry wynik w kazdym podpunkcie");
 INSERT INTO [Rozklad Punktow] Values(512, 24, 5, "2- podpunkt a, 3- podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(612, 25, 7, "1 - dane i szukane, 2-rysunek, 1- poprawna odpowiedz, 2- dobry tok rozumowania, 1- brak b³êdów rachunkowych");
 INSERT INTO [Rozklad Punktow] Values(612, 21, 2, "1-odpowiedz,dane i szukane, 1-obliczenia");
 INSERT INTO [Rozklad Punktow] Values(612, 22, 3, "Po 1 za zaznacznie prawidlowego wyniku");
-INSERT INTO [Rozklad Punktow] Values(612, 23, 3, "Po 1 za dobry wynik w ka¿dym podpunkcie");
+INSERT INTO [Rozklad Punktow] Values(612, 23, 3, "Po 1 za dobry wynik w kazdym podpunkcie");
 INSERT INTO [Rozklad Punktow] Values(612, 24, 5, "2- podpunkt a, 3- podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(112, 25, 7, "1 - dane i szukane, 2-rysunek, 1- poprawna odpowiedz, 2- dobry tok rozumowania, 1- brak b³êdów rachunkowych");
 INSERT INTO [Rozklad Punktow] Values(112, 21, 2, "1-odpowiedz,dane i szukane, 1-obliczenia");
 INSERT INTO [Rozklad Punktow] Values(112, 22, 3, "Po 1 za zaznacznie prawidlowego wyniku");
-INSERT INTO [Rozklad Punktow] Values(112, 23, 3, "Po 1 za dobry wynik w ka¿dym podpunkcie");
+INSERT INTO [Rozklad Punktow] Values(112, 23, 3, "Po 1 za dobry wynik w kazdym podpunkcie");
 INSERT INTO [Rozklad Punktow] Values(112, 24, 5, "2- podpunkt a, 3- podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(104, 11, 3, "Wedlug oceniajacego");
 INSERT INTO [Rozklad Punktow] Values(104, 12, 5, "Wedlug oceniajacego");
@@ -827,44 +827,43 @@ INSERT INTO [Rozklad Punktow] Values(107, 3, 7, "1- odpowiedz, 1- dane,  2- obli
 INSERT INTO [Rozklad Punktow] Values(107, 4, 6, "1- odpowiedz, 1- dane, 1- rysunek, 3- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(107, 5, 5, "1- odpowiedz, 1- dane, 1- rysunek, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(107, 6, 8, "1-zdefiniwanie tezy i zalozen, 7-dowód");
-INSERT INTO [Rozklad Punktow] Values(107, 1, 5, "1- odpowiedz, 1- dane, 3- obliczenia");
+INSERT INTO [Rozklad Punktow] Values(107, 7, 5, "1- odpowiedz, 1- dane, 3- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(207, 1, 5, "1- odpowiedz, 1- dane, 1- rysunek, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(207, 2, 4, "1- odpowiedz, 1- dane, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(207, 3, 7, "1- odpowiedz, 1- dane,  2- obliczenia podpunkt a, 3-obliczenia podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(207, 4, 6, "1- odpowiedz, 1- dane, 1- rysunek, 3- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(207, 5, 5, "1- odpowiedz, 1- dane, 1- rysunek, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(207, 6, 8, "1-zdefiniwanie tezy i zalozen, 7-dowód");
-INSERT INTO [Rozklad Punktow] Values(207, 1, 5, "1- odpowiedz, 1- dane, 3- obliczenia");
+INSERT INTO [Rozklad Punktow] Values(207, 7, 5, "1- odpowiedz, 1- dane, 3- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(307, 1, 5, "1- odpowiedz, 1- dane, 1- rysunek, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(307, 2, 4, "1- odpowiedz, 1- dane, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(307, 3, 7, "1- odpowiedz, 1- dane,  2- obliczenia podpunkt a, 3-obliczenia podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(307, 4, 6, "1- odpowiedz, 1- dane, 1- rysunek, 3- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(307, 5, 5, "1- odpowiedz, 1- dane, 1- rysunek, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(307, 6, 8, "1-zdefiniwanie tezy i zalozen, 7-dowód");
-INSERT INTO [Rozklad Punktow] Values(307, 1, 5, "1- odpowiedz, 1- dane, 3- obliczenia");
+INSERT INTO [Rozklad Punktow] Values(307, 7, 5, "1- odpowiedz, 1- dane, 3- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(407, 1, 5, "1- odpowiedz, 1- dane, 1- rysunek, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(407, 2, 4, "1- odpowiedz, 1- dane, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(407, 3, 7, "1- odpowiedz, 1- dane,  2- obliczenia podpunkt a, 3-obliczenia podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(407, 4, 6, "1- odpowiedz, 1- dane, 1- rysunek, 3- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(407, 5, 5, "1- odpowiedz, 1- dane, 1- rysunek, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(407, 6, 8, "1-zdefiniwanie tezy i zalozen, 7-dowód");
-INSERT INTO [Rozklad Punktow] Values(407, 1, 5, "1- odpowiedz, 1- dane, 3- obliczenia");
+INSERT INTO [Rozklad Punktow] Values(407, 7, 5, "1- odpowiedz, 1- dane, 3- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(507, 1, 5, "1- odpowiedz, 1- dane, 1- rysunek, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(507, 2, 4, "1- odpowiedz, 1- dane, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(507, 3, 7, "1- odpowiedz, 1- dane,  2- obliczenia podpunkt a, 3-obliczenia podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(507, 4, 6, "1- odpowiedz, 1- dane, 1- rysunek, 3- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(507, 5, 5, "1- odpowiedz, 1- dane, 1- rysunek, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(507, 6, 8, "1-zdefiniwanie tezy i zalozen, 7-dowód");
-INSERT INTO [Rozklad Punktow] Values(507, 1, 5, "1- odpowiedz, 1- dane, 3- obliczenia");
+INSERT INTO [Rozklad Punktow] Values(507, 7, 5, "1- odpowiedz, 1- dane, 3- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(607, 1, 5, "1- odpowiedz, 1- dane, 1- rysunek, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(607, 2, 4, "1- odpowiedz, 1- dane, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(607, 3, 7, "1- odpowiedz, 1- dane,  2- obliczenia podpunkt a, 3-obliczenia podpunkt b");
 INSERT INTO [Rozklad Punktow] Values(607, 4, 6, "1- odpowiedz, 1- dane, 1- rysunek, 3- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(607, 5, 5, "1- odpowiedz, 1- dane, 1- rysunek, 2- obliczenia");
 INSERT INTO [Rozklad Punktow] Values(607, 6, 8, "1-zdefiniwanie tezy i zalozen, 7-dowód");
-INSERT INTO [Rozklad Punktow] Values(607, 1, 5, "1- odpowiedz, 1- dane, 3- obliczenia");
+INSERT INTO [Rozklad Punktow] Values(607, 7, 5, "1- odpowiedz, 1- dane, 3- obliczenia");
 
--- Szkoly
 INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("I LO w Krakowie", "Krakow", "Ogrodowa 14", 13521, "Amanda Niziolek");
 INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("II LO w Krawowie", "Krakow", "Warszawska 3", 13534, "Klaudia Likier");
 INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("I Liceum Matematyczno-Informatyczne w Krakowie", "Krakow", "Warszawska 3", 13534, "Klaudia Likier");
@@ -873,11 +872,10 @@ INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("III 
 INSERT INTO Szkoly (Nazwa, [Nr Szkoly], Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("Technikum Budowlane", 1, "Krakow", "Ogrodowa 8", 13521, "Adrian Kowalski");
 INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("I LO w Poznaniu", "Poznan", "Horacego 14", 25361, "Aleksandra Fikus");
 INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("I LO w Warszawie", "Warszawa", "Ogrodowa 11", 31152, "Krzysztof Roman");
-INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("II LO w Warszawie", "Warszawa", "Ró¿ana 3", 31154, "Roman Aniol");
+INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("II LO w Warszawie", "Warszawa", "Rózana 3", 31154, "Roman Aniol");
 INSERT INTO Szkoly (Nazwa, Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("III LO w Warszawie", "Warszawa", "Klasztorna 11", 31172, "Klara Dom");
 INSERT INTO Szkoly (Nazwa, [Nr Szkoly], Miasto, Ulica, [Kod pocztowy], Dyrektor) VALUES("Technikum Gastronomiczne w Poznaniu", 1, "Poznan", "Wodna 3", 25265, "Magdelena Kapusta");
 
---Osoby
 INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(159624, "Anna", "Tetmajer", date("1966-03-11"), "Zamkowa", "Krakow", 13685, "e2e0f55b0b1530297c439a5066ac0723562eda06") ;
 INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(126842, "Zuzanna", "Lament", date("1996-02-21"), "Wilhelmia", "Krakow", 13355, "10fea34ec858803b5560ed710af8a371d0d5dd05") ;
 INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(137891, "Tomasz", "Lodowik", date("1970-11-01"), "Warszawska", "Krakow", 13534, "e2c3b00cebe8deb8f858ed0aebedefe5c4410060") ;
@@ -893,7 +891,6 @@ INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto,
 INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(119235, "Ryszard", "Michalski", date("1998-08-16"), "Judy", "Warszawa", 31269, "6b1bcb0947073332c837542e887f1554fd17c639") ;
 INSERT INTO Osoby(PESEL, Pierwsze_Imie, Nazwisko, Data_Urodzenia, Ulica, Miasto, [Kod pocztowy], haslo) VALUES(192856, "Luiza", "Szara", date("1996-04-21"), "Konwaliowa", "Warszawa", 31245, "549f81acdfe221bb7fa16f9b5f8287e439a8dde0") ;
 
---Nauczyciele
 INSERT INTO Nauczyciele(PESEL, Staz, Szkola, Uprawnienia)  VALUES(159624, 20, 3, 1) ;
 INSERT INTO Nauczyciele(PESEL, Staz, Szkola, Uprawnienia) VALUES(137891, 15, null, 1) ;
 INSERT INTO Nauczyciele(PESEL, Staz, Szkola, Uprawnienia) VALUES(176583, 12, 7, 1) ;
@@ -901,7 +898,6 @@ INSERT INTO Nauczyciele(PESEL, Staz, Szkola, Uprawnienia) VALUES(179942, 5, 4, 0
 INSERT INTO Nauczyciele(PESEL, Staz, Szkola, Uprawnienia) VALUES(115472, 30, 9, 1) ;
 INSERT INTO Nauczyciele(PESEL, Staz, Szkola, Uprawnienia) VALUES(118556, 21, 10, 1) ;
 
---Uczniowie
 INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia]) VALUES(209561, 4, 4, date("2015-09-01")) ;
 INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia], [Rok zakonczenia]) VALUES(126842, 1, 3, date("2011-09-01"), date("2015-04-30")) ;
 INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia]) VALUES(189145, 3, 7, date("2009-09-01")) ;
@@ -911,7 +907,6 @@ INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia]) VALUES(19365
 INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia]) VALUES(119235, 6, 10, date("2014-08-16")) ;
 INSERT INTO Uczniowie(PESEL, Wychowawca, Szkola, [Rok rozpoczecia]) VALUES(192856, 6, 10, date("2012-09-01"));
 
---Rezultaty
 INSERT INTO Rezultaty VALUES(25, 602, 2, 38, 95, 1);
 INSERT INTO Rezultaty VALUES(36, 604, 2, 11, 27.5, 0);
 INSERT INTO Rezultaty VALUES(136, 614, 2, 15, 37.5, 1);
@@ -929,14 +924,13 @@ INSERT INTO Rezultaty VALUES(652, 303, 6, 42, 84, 1);
 INSERT INTO Rezultaty VALUES(7, 304, 6, 30, 75, 1);
 INSERT INTO Rezultaty VALUES(425, 402, 6, 31, 77.5, 1);
 
---Punkty
 INSERT INTO Punkty Values(207, 1, 4, "brak rysunku", 5);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(207, 2, 4, 5);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(207, 3, 7, 5);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(207, 4, 6, 5);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(207, 5, 0, 5);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(207, 6, 8, 5);
-INSERT INTO Punkty Values(207, 1, 1, "Za dane", 5);
+INSERT INTO Punkty Values(207, 7, 1, "Za dane", 5);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 1, 3, 1);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 2, 6, 1);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(11, 3, 0, 1);
@@ -1172,7 +1166,7 @@ INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 3
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 4, 1, 2);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 5, 1, 2);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 6, 1, 2);
-INSERT INTO Punkty Values(36, 7, 1, "Zaznaczono odpowiedz C", 2);
+INSERT INTO Punkty Values(36, 7, 1, " Zaznaczon0 odpowiedz C", 2);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 8, 1, 2);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(36, 9, 1, 2);
 INSERT INTO Punkty Values(36, 10, 0, "Zaznaczono odpowiedz B", 2);
@@ -1206,7 +1200,7 @@ INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 3
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 4, 1, 2);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 5, 1, 2);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 6, 1, 2);
-INSERT INTO Punkty Values(32, 7, 1, "Zaznaczon0 odpowiedz C", 2);
+INSERT INTO Punkty Values(32, 7, 1, " Zaznaczon0 odpowiedz C", 2);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 8, 1, 2);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(32, 9, 1, 2);
 INSERT INTO Punkty Values(32, 10, 0, "Zaznaczono odpowiedz D", 2);
@@ -1227,7 +1221,7 @@ INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 7,
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 8, 1, 2);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 9, 1, 2);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 10, 1, 2);
-INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy)  Values(7, 11, 3, 2);
+INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 11, 3, 2);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 12, 5, 2);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 13, 4, 2);
 INSERT INTO Punkty([Nr egzaminu], [Nr zadania], Punkty, Oceniajacy) Values(7, 14, 2, 2);

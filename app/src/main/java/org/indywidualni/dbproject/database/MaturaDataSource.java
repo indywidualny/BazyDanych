@@ -76,11 +76,8 @@ public class MaturaDataSource {
         boolean isTeacher = false;
 
         try {
-            cursor = database.rawQuery("if(Select Count(*) from Nauczyciele Where PESEL=?)=1", new String[] {pesel});
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                isTeacher = cursor.getInt(cursor.getColumnIndex("Pesel")) > 0;
-            }
+            cursor = database.rawQuery("Select PESEL from Nauczyciele Where PESEL=?", new String[] {pesel});
+            isTeacher = cursor.getCount() == 1;
         } finally {
             if (cursor != null)
                 cursor.close();

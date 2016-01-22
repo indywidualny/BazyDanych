@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.indywidualni.dbproject.R;
 
@@ -32,7 +33,7 @@ public class UserActivity extends BaseActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        // load the right fragment
+        // get string extras
         String pesel = "";
         boolean isTeacher = false;
 
@@ -42,7 +43,14 @@ public class UserActivity extends BaseActivity {
             isTeacher = extras.getBoolean("teacher");
         }
 
+        // debug line
         Log.v(TAG, "PESEL: " + pesel + "  isTeacher: " + isTeacher);
+
+        // display a greeting toast
+        if (isTeacher)
+            Toast.makeText(this, getString(R.string.hello_teacher), Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(this, getString(R.string.hello_student), Toast.LENGTH_SHORT).show();
 
         // toolbar spinner
         Spinner spinner = (Spinner) findViewById(R.id.spinner_nav);
