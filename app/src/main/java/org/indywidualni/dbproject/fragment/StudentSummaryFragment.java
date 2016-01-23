@@ -37,7 +37,7 @@ public class StudentSummaryFragment extends Fragment {
         TextView averageResult = (TextView) getView().findViewById(R.id.average_result);
 
         try {
-            final StudentSummary studentSummary = dataSource.getStudentSummary(UserActivity.pesel);
+            final StudentSummary studentSummary = dataSource.getStudentSummary(UserActivity.getCurrentPesel());
 
             /* App is in only one language so let's do a bad thing and leave hardcoded
              * strings. Normally strings should be got from resources and formatted.

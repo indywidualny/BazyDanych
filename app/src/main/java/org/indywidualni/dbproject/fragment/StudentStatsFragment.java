@@ -35,7 +35,7 @@ public class StudentStatsFragment extends Fragment {
 
         try {
             // first get all student's exams
-            final ArrayList<StudentExam> studentExams = dataSource.getAllStudentExams(UserActivity.pesel);
+            final ArrayList<StudentExam> studentExams = dataSource.getAllStudentExams(UserActivity.getCurrentPesel());
             ArrayList<StudentExamsStats> studentStats = new ArrayList<>();
 
             // loop through all the exams to get their stats, add results into a list

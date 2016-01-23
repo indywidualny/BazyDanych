@@ -38,4 +38,8 @@
         <item>Statystyki</item>
     </string-array>
 
+    <string-array name="admin_array">
+        <item>Edycja haseł </item>
+    </string-array>
+
 </resources>

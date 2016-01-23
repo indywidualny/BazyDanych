@@ -38,17 +38,18 @@ public class AdminUsersAdapter extends ArrayAdapter<AdminUser> {
         /* App is in only one language so let's do a bad thing and leave hardcoded
          * strings. Normally strings should be got from resources and formatted.
          */
-        String firstLine = null;
-        String secondLine = null;
-        String thirdLine = null;
-        String fourthLine = null;
-        String fifthLine = null;
-/*
-        String courseLine = item.getCourse() + " (poziom " + item.getLevel() + ")";
-        String infoLine = "Wynik: " + item.getResult() + "  (" + item.getPercent() + "%)";
-        String dateLine = "Rok: " + item.getYear() + "   Termin: " + item.getTime();
-        String passedLine = item.getPassed() ? "ZDANY" : "NIE ZDANY";
-*/
+        String secondName = item.getSecondName() == null ? "" : (item.getSecondName() + " ");
+        String streetHouse = (item.getRoom() == null ? "" : " " + (item.getRoom() + "/"))
+                + (item.getHouse() == null ? "" : item.getHouse());
+        String realPhone = item.getPhone() == null ? "Brak" : item.getPhone();
+        realPhone = realPhone.equals("0") ? "brak" : realPhone;
+
+        String firstLine = item.getFirstName() + " " + secondName + item.getSurname();
+        String secondLine = "Adres: " + item.getStreet() + streetHouse + ", "
+                + item.getZipcode() + " " + item.getCity();
+        String thirdLine = "Numer kontaktowy: " + realPhone;
+        String fourthLine = "Urodzony: " + item.getBornDate();
+        String fifthLine = "PESEL: " + item.getPesel();
 
         first.setText(firstLine);
         second.setText(secondLine);

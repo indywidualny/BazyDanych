@@ -16,8 +16,12 @@ import org.indywidualni.dbproject.fragment.TeacherFragment;
 public class UserActivity extends BaseActivity {
 
     private static final String TAG = UserActivity.class.getSimpleName();
-    public static String pesel;
-    public static boolean isTeacher;
+    private static String currentPesel;
+    private static boolean isTeacher;
+
+    public static String getCurrentPesel() {
+        return currentPesel;
+    }
 
     /**
      * Called when the activity is being created. During creation all intent extras
@@ -43,11 +47,11 @@ public class UserActivity extends BaseActivity {
         // get string extras
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            pesel = extras.getString("pesel");
+            currentPesel = extras.getString("pesel");
             isTeacher = extras.getBoolean("teacher");
         }
 
-        Log.v(TAG, "PESEL: " + pesel + ", isTeacher: " + isTeacher);
+        Log.v(TAG, "PESEL: " + currentPesel + ", isTeacher: " + isTeacher);
 
         // display a greeting toast and load the right fragment
         if (isTeacher) {

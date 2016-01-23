@@ -37,7 +37,7 @@ public class StudentExamsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         try {
-            final ArrayList<StudentExam> studentExams = dataSource.getAllStudentExams(UserActivity.pesel);
+            final ArrayList<StudentExam> studentExams = dataSource.getAllStudentExams(UserActivity.getCurrentPesel());
 
             //noinspection ConstantConditions
             ListView list = (ListView) getView().findViewById(R.id.list);

@@ -292,7 +292,7 @@ public class MaturaDataSource {
         ArrayList<AdminUser> list = new ArrayList<>();
 
         try {
-            cursor = database.rawQuery("Select * from Osoby", new String[] { null });
+            cursor = database.rawQuery("Select * from Osoby", new String[] {});
             if(cursor.getCount() > 0) {
                 // retrieve the data to my custom model
                 cursor.moveToFirst();

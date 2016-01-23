@@ -39,7 +39,7 @@ public class StudentExamsStatsAdapter extends ArrayAdapter<StudentExamsStats> {
          */
         String firstLine = item.getPrzedmiot() + " (poziom " + item.getPoziom() + ")";
         String secondLine = "Średni wynik: " + item.getSrednio() + " punktów  (" + item.getSrednioProcent()  + "%)";
-        String thirdLine = item.getZdajacy() + " osób zdawało";
+        String thirdLine = item.getZdajacy() + " osób zdawało " + item.getTermin() + " termin";
         String fourthLine = "Zdawalność: " + item.getZdawalnosc() + "%";
 
         first.setText(firstLine);

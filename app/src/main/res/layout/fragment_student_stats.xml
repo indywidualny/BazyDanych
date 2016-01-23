@@ -13,6 +13,7 @@
         android:scrollbarStyle="outsideInset"
         android:overScrollFooter="@android:color/transparent"
         android:clipToPadding="false"
+        android:listSelector="@android:color/transparent"
         />
 
 </LinearLayout>
