@@ -3,7 +3,11 @@ package org.indywidualni.dbproject.fragment;
 import android.app.ListFragment;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,6 +28,7 @@ public class AdminFragment extends ListFragment implements AdapterView.OnItemCli
     private static final String TAG = AdminFragment.class.getSimpleName();
     private MaturaDataSource dataSource = MaturaDataSource.getInstance();
     private ArrayList<AdminUser> users;
+    private String peselCallback;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,14 +54,48 @@ public class AdminFragment extends ListFragment implements AdapterView.OnItemCli
             AdminUsersAdapter adapter = new AdminUsersAdapter(getActivity(), users);
             setListAdapter(adapter);
             getListView().setOnItemClickListener(this);
+            getListView().setOnItemLongClickListener(null);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        try { registerForContextMenu(getListView()); } catch (Exception ignore) {}
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try { unregisterForContextMenu(getListView()); } catch (Exception ignore) {}
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getActivity(), "Item: " + position + " " + users.get(position).getFirstName(), Toast.LENGTH_SHORT).show();
+        if (users != null && users.size() > 0) {
+            peselCallback = users.get(position).getPesel();
+            getActivity().openContextMenu(getListView());
+        }
+    }
+
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_admin_users, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.change_password:
+                Log.v("onContextItemSelected", "Change password for PESEL: " + peselCallback);
+            break;
+        }
+        return super.onContextItemSelected(item);
     }
 
 }

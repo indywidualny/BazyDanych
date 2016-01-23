@@ -20,6 +20,7 @@
     <string name="hello_student">Witaj uczniu!</string>
     <string name="student_exam_details">Szczegółowe wyniki</string>
     <string name="admin_permission">Administrator może zmieniać hasła wszystkich użytkowników</string>
+    <string name="change_password">Zmień hasło</string>
 
     <string-array name="planets_array">
         <item>Podsumowanie </item>
