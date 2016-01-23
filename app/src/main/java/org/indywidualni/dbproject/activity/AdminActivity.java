@@ -12,6 +12,9 @@ import org.indywidualni.dbproject.R;
 
 /**
  * Created by Krzysztof Grabowski on 21.01.16.
+ * Admin Activity is loaded when an admin has logged in. It's just for activity lifecycle.
+ * All the actions are made in Admin Fragment, we like fragments.
+ * Spinner menu is implemented here as well.
  */
 public class AdminActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
@@ -44,7 +47,6 @@ public class AdminActivity extends BaseActivity implements AdapterView.OnItemSel
         spinner.setOnItemSelectedListener(this);
     }
 
-    @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         Log.v(TAG, "Spinner position: " + pos);

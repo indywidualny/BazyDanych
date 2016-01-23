@@ -11,6 +11,8 @@ import org.indywidualni.dbproject.util.FileOperation;
 
 /**
  * Created by Krzysztof Grabowski on 20.01.16.
+ * Database Helper. It's main goal is to create/upgrade a database and it's used
+ * by our data sources.
  */
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
@@ -26,6 +28,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Database creation. It's tricky but neat. All the SQL commands are read from a text file
+     * to string. After this a string is split into a string array of single commands because we
+     * can execute only one command at a time. For Each loop executes all the meaningful commands.
+     * @param database SQLite database
+     */
     @Override
     public void onCreate(SQLiteDatabase database) {
         Log.v("SQLiteDatabase", "Creating database");
@@ -39,6 +47,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Called when the database is upgraded to a new version
+     * @param db database
+     * @param oldVersion old version id
+     * @param newVersion new version id
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(MySQLiteHelper.class.getName(),

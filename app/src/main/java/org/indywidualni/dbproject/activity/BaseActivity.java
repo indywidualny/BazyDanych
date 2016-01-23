@@ -11,6 +11,9 @@ import org.indywidualni.dbproject.R;
 
 /**
  * Created by Krzysztof Grabowski on 22.01.16.
+ * All the activities are children of this class in order to avoid
+ * code duplication for a menu. A menu is the same for all the activities
+ * so it's a good place to put its methods here.
  */
 public class BaseActivity extends AppCompatActivity {
 

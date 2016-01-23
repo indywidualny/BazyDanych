@@ -5,14 +5,16 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.indywidualni.dbproject.model.StudentExam;
+import org.indywidualni.dbproject.model.StudentExerciseResult;
 import org.indywidualni.dbproject.model.StudentSummary;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Krzysztof Grabowski on 20.01.16.
- * Singleton pattern
+ * Singleton pattern. The core of an application. All the data is retrieved from
+ * the database in this class. Data retrieving methods are synchronized in order to
+ * make it thread safe.
  */
 public class MaturaDataSource {
 
@@ -23,6 +25,12 @@ public class MaturaDataSource {
 
     private MaturaDataSource() {}
 
+    /**
+     * We want to make it thread safe, so the best way of achieving it is just to
+     * get an instance of this object every time we need it and don't worry about
+     * our future. Singleton pattern is rather a popular one.
+     * @return an instance of this class
+     */
     public static MaturaDataSource getInstance() {
         if (instance == null) {
             synchronized (MaturaDataSource.class) {
@@ -33,6 +41,10 @@ public class MaturaDataSource {
         return instance;
     }
 
+    /**
+     * Open a database, actually open a writable database
+     * @throws SQLException
+     */
     private void open() throws SQLException {
         if (dbHelper == null) {
             dbHelper = new MySQLiteHelper();
@@ -40,6 +52,11 @@ public class MaturaDataSource {
         }
     }
 
+    /**
+     * Close database when it's not needed anymore. Thread safe implementation
+     * although it's not needed at all because all the methods are synchronized
+     * to an object of the class.
+     */
     private void close() {
         if (database != null) {
             // actually not needed because of synchronization
@@ -51,11 +68,24 @@ public class MaturaDataSource {
         }
     }
 
+    /**
+     * Empty database connection. Just open a database and close it. It seems stupid, yeah?
+     * It's rather not. During the very first run of an app (or when a database has been
+     * upgraded), opening it forces database creation (recreation). We need to do it
+     * asynchronously during an app start to avoid any UI freezes.
+     * @throws SQLException
+     */
     public synchronized void emptyConnection() throws SQLException {
         open();
         close();
     }
 
+    /**
+     * Open a database, get user password hash from a database, close a database.
+     * @param pesel pesel of an user
+     * @return salted hash on a password
+     * @throws SQLException
+     */
     public synchronized String getUserPassword(String pesel) throws SQLException {
         open();
         Cursor cursor = null;
@@ -76,6 +106,12 @@ public class MaturaDataSource {
         return password;
     }
 
+    /**
+     * Open a database, check is user a teacher, close a database.
+     * @param pesel pesel of an user
+     * @return is a teacher or not
+     * @throws SQLException
+     */
     public synchronized boolean getIsUserTeacher(String pesel) throws SQLException {
         open();
         Cursor cursor = null;
@@ -93,6 +129,13 @@ public class MaturaDataSource {
         return isTeacher;
     }
 
+    /**
+     * Open a database, get a student summary into a model (PESEL, first name, etc.).
+     * Close a database then.
+     * @param pesel pesel of a student
+     * @return student summary model
+     * @throws SQLException
+     */
     public synchronized StudentSummary getStudentSummary(String pesel) throws SQLException {
         open();
         Cursor cursor = null;
@@ -122,6 +165,12 @@ public class MaturaDataSource {
         return studentSummary;
     }
 
+    /**
+     * Open a database, get all the basic exam results for a student, close a database.
+     * @param pesel pesel of a student
+     * @return a list of all student exams results
+     * @throws SQLException
+     */
     public synchronized ArrayList<StudentExam> getAllStudentExams (String pesel) throws SQLException {
         open();
         Cursor cursor = null;
@@ -129,7 +178,7 @@ public class MaturaDataSource {
 
         try {
             cursor = database.rawQuery("Select E.Przedmiot, E.Poziom, E.Rok, E.Termin+1 AS Termin, " +
-                    "R.Wynik, R.[Wynik proc], R.Zdany, E.ID from Egzaminy E Join Rezultaty R ON " +
+                    "R.Wynik, R.[Wynik proc], R.Zdany, R.[Nr egzaminu] from Egzaminy E Join Rezultaty R ON " +
                     "E.ID=R.Egzamin where Zdajacy=(Select ID from " +
                     "Uczniowie where PESEL=?)", new String[] { pesel });
             if(cursor.getCount() > 0) {
@@ -151,6 +200,11 @@ public class MaturaDataSource {
         return list;
     }
 
+    /**
+     * A cursor which reads a current row and loads all the data into a model
+     * @param cursor cursor
+     * @return student exam model
+     */
     private StudentExam cursorToStudentExam(Cursor cursor) {
         String course = cursor.getString(0);
         int level = cursor.getInt(1);
@@ -164,26 +218,22 @@ public class MaturaDataSource {
         return new StudentExam(course, level, year, time, result, percent, passed, id);
     }
 
-/*    public synchronized ArrayList<String> StudentExamResult(String examID) {
+    public synchronized ArrayList<StudentExerciseResult> getStudentExamResult(String examID) {
         open();
         Cursor cursor = null;
-        ArrayList<String> list = new ArrayList<>();
+        ArrayList<StudentExerciseResult> list = new ArrayList<>();
 
         try {
-            cursor = database.rawQuery("Select [Nr zadania], Punkty, [Opis Oceny] from Punkty " +
-                    "Where [Nr egzaminu] = ?", new String[] { examID });
+            cursor = database.rawQuery("Select * from Punkty where [Nr egzaminu] = ?", new String[] { examID });
             if(cursor.getCount() > 0) {
                 // retrieve the data to my custom model
                 cursor.moveToFirst();
 
-                list.add(cursor.getString(0));
-                int level = cursor.getInt(1);
-                int year = cursor.getInt(2);
-                int time = cursor.getInt(3);
-                int result = cursor.getInt(4);
-                int percent = cursor.getInt(5);
-                boolean passed = cursor.getInt(6) > 0;
-                int id = cursor.getInt(7);
+                while (!cursor.isAfterLast()) {
+                    StudentExerciseResult exam = cursorToStudentExercise(cursor);
+                    list.add(exam);
+                    cursor.moveToNext();
+                }
             }
         } finally {
             if (cursor != null)
@@ -192,7 +242,11 @@ public class MaturaDataSource {
 
         close();
         return list;
-    }*/
+    }
+
+    private StudentExerciseResult cursorToStudentExercise(Cursor cursor) {
+        return new StudentExerciseResult(cursor.getInt(1), cursor.getInt(2), cursor.getString(3));
+    }
 
 /*    public Uczen createComment(String comment) {
         ContentValues values = new ContentValues();

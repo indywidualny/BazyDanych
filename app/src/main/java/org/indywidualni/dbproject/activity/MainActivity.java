@@ -26,6 +26,8 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by Krzysztof Grabowski on 13.12.15.
+ * Main Activity, it's launched by a launcher icon.
+ * Logging in happens here as well as first database creation.
  */
 public class MainActivity extends BaseActivity {
 
@@ -34,6 +36,10 @@ public class MainActivity extends BaseActivity {
     private AlertDialog alertUserDialog;
     private AlertDialog alertAdminDialog;
 
+    /**
+     * Called when the activity is being created.
+     * @param savedInstanceState saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,12 +49,11 @@ public class MainActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /** Let's instantiate a database helper. */
+        // let's instantiate a database helper.
         dataSource = MaturaDataSource.getInstance();
 
-        /** Create/upgrade database now in order to skip this part
-         *  during the next data retrieval.
-         */
+        /* Create/upgrade database now in order to skip this part
+           during the next data retrieval. */
         new PrepareDatabase().execute();
 
         // bind buttons to the layout
@@ -84,18 +89,25 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Called when the activity is being destroyed
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
 
+    /**
+     * Handling back button
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
 
-    /** Database creation takes some time and should not be done on UI thread.
-     *  We need an AsyncTask to do it properly.
+    /**
+     * Database creation takes some time and should not be done on UI thread.
+     * We need an AsyncTask to do it properly.
      */
     private class PrepareDatabase extends AsyncTask<Void, Void, Void> {
 
@@ -112,6 +124,12 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    /**
+     * User login dialog: it determines whether a student or a teacher is trying
+     * to log in (by PESEL). All passwords are hashed (salted hash).
+     * After successful login activity is switched to the right one.
+     * @return created dialog
+     */
     @SuppressLint("InflateParams")
     private AlertDialog createUserLoginDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -178,6 +196,11 @@ public class MainActivity extends BaseActivity {
         return adb.create();
     }
 
+    /**
+     * Admin login dialog. Hash password field input, compare it with the real one
+     * ane, switch activity to the right one after a successful login.
+     * @return created dialog
+     */
     @SuppressLint("InflateParams")
     private AlertDialog createAdminLoginDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);

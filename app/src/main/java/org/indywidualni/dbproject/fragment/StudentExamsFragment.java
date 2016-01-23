@@ -8,13 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.indywidualni.dbproject.R;
 import org.indywidualni.dbproject.activity.UserActivity;
 import org.indywidualni.dbproject.adapter.StudentExamsAdapter;
+import org.indywidualni.dbproject.adapter.StudentExerciseResultsAdapter;
 import org.indywidualni.dbproject.database.MaturaDataSource;
 import org.indywidualni.dbproject.model.StudentExam;
+import org.indywidualni.dbproject.model.StudentExerciseResult;
 
 import java.util.ArrayList;
 
@@ -50,11 +51,14 @@ public class StudentExamsFragment extends Fragment {
                 dialog.setContentView(R.layout.dialog_student_exam);
                 dialog.setTitle(getString(R.string.student_exam_details));
 
-                // set the custom dialog components - text, image and button
-                TextView text = (TextView) dialog.findViewById(R.id.text);
-                text.setText("Android custom dialog example!");
-
                 dialog.show();
+
+                final ArrayList<StudentExerciseResult> studentExerciseResult =
+                        dataSource.getStudentExamResult(examID);
+                ListView le = (ListView) dialog.findViewById(R.id.list_exercises);
+                StudentExerciseResultsAdapter sera = new StudentExerciseResultsAdapter(getView().getContext(),
+                        studentExerciseResult);
+                le.setAdapter(sera);
             }
         });
     }

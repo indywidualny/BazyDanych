@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 /**
  * Created by Krzysztof Grabowski on 23.01.16.
+ * Array Adapter for student's exams. A List View can be populated because of
+ * the existence of this adapter.
  */
 public class StudentExamsAdapter extends ArrayAdapter<StudentExam> {
 
@@ -34,8 +36,8 @@ public class StudentExamsAdapter extends ArrayAdapter<StudentExam> {
         TextView date = (TextView) convertView.findViewById(R.id.date);
         TextView passed = (TextView) convertView.findViewById(R.id.passed);
 
-        /** App is in only one language so let's do a bad thing and leave hardcoded
-         *  strings. Normally strings should be got from resources and formatted.
+        /* App is in only one language so let's do a bad thing and leave hardcoded
+         * strings. Normally strings should be got from resources and formatted.
          */
         String courseLine = item.getCourse() + " (poziom " + item.getLevel() + ")";
         String infoLine = "Wynik: " + item.getResult() + "  (" + item.getPercent() + "%)";

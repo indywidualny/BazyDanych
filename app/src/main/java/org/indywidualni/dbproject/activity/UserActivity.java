@@ -11,6 +11,7 @@ import org.indywidualni.dbproject.fragment.TeacherFragment;
 
 /**
  * Created by Krzysztof Grabowski on 22.01.16.
+ * After a successful student/teacher login this activity is opened.
  */
 public class UserActivity extends BaseActivity {
 
@@ -18,6 +19,12 @@ public class UserActivity extends BaseActivity {
     public static String pesel;
     public static boolean isTeacher;
 
+    /**
+     * Called when the activity is being created. During creation all intent extras
+     * PESEL, session type (student/teacher) are obtained. A greeting Toast is displayed
+     * and a placeholder fragment is replaced with the correct one (student or teacher).
+     * @param savedInstanceState saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +59,11 @@ public class UserActivity extends BaseActivity {
             getFragmentManager().beginTransaction().replace(R.id.fragment,
                     new StudentFragment()).commit();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // do nothing
     }
 
 }
