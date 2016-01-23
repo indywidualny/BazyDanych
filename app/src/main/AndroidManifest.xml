@@ -24,6 +24,7 @@
         <activity
             android:name=".activity.AdminActivity"
             android:label="@string/admin"
+            android:configChanges="screenSize|orientation"
             android:parentActivityName=".activity.MainActivity"
             tools:ignore="UnusedAttribute">
             <meta-data
@@ -33,6 +34,7 @@
         <activity
             android:name=".activity.UserActivity"
             android:label="@string/user"
+            android:configChanges="screenSize|orientation"
             android:parentActivityName=".activity.MainActivity"
             tools:ignore="UnusedAttribute">
             <meta-data
