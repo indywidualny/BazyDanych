@@ -11,7 +11,7 @@ import android.widget.TextView;
 import org.indywidualni.dbproject.R;
 import org.indywidualni.dbproject.activity.UserActivity;
 import org.indywidualni.dbproject.database.MaturaDataSource;
-import org.indywidualni.dbproject.models.StudentSummary;
+import org.indywidualni.dbproject.model.StudentSummary;
 
 /**
  * Created by Krzysztof Grabowski on 22.01.16.
@@ -39,6 +39,9 @@ public class StudentSummaryFragment extends Fragment {
         try {
             final StudentSummary studentSummary = dataSource.getStudentSummary(UserActivity.pesel);
 
+            /** App is in only one language so let's do a bad thing and leave hardcoded
+             *  strings. Normally strings should be got from resources and formatted.
+             */
             String peselLine = "PESEL: " + studentSummary.getPesel();
             String nameLine = studentSummary.getFirstName() + " " + studentSummary.getSurname();
             String examsNoLine = "Liczba egzaminów: " + studentSummary.getNumberOfExams();

@@ -3,4 +3,16 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ListView
+        android:id="@+id/list"
+        android:dividerHeight="1dp"
+        android:divider="@drawable/list_divider"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:footerDividersEnabled="false"
+        android:scrollbarStyle="outsideInset"
+        android:overScrollFooter="@android:color/transparent"
+        android:clipToPadding="false"
+        />
+
 </LinearLayout>

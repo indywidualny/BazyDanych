@@ -4,7 +4,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import org.indywidualni.dbproject.models.StudentSummary;
+import org.indywidualni.dbproject.model.StudentExam;
+import org.indywidualni.dbproject.model.StudentSummary;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Krzysztof Grabowski on 20.01.16.
@@ -38,7 +42,7 @@ public class MaturaDataSource {
 
     private void close() {
         if (database != null) {
-            // probably not needed because of synchronization
+            // actually not needed because of synchronization
             //noinspection StatementWithEmptyBody
             while (database.isDbLockedByCurrentThread()) {}
             dbHelper.close();
@@ -58,7 +62,7 @@ public class MaturaDataSource {
         String password = "";
 
         try {
-            cursor = database.rawQuery("SELECT Haslo FROM Osoby WHERE PESEL=?", new String[] {pesel});
+            cursor = database.rawQuery("SELECT Haslo FROM Osoby WHERE PESEL=?", new String[] { pesel });
             if(cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 password = cursor.getString(cursor.getColumnIndex("Haslo"));
@@ -78,7 +82,7 @@ public class MaturaDataSource {
         boolean isTeacher = false;
 
         try {
-            cursor = database.rawQuery("Select PESEL from Nauczyciele Where PESEL=?", new String[] {pesel});
+            cursor = database.rawQuery("Select PESEL from Nauczyciele Where PESEL=?", new String[] { pesel });
             isTeacher = cursor.getCount() == 1;
         } finally {
             if (cursor != null)
@@ -95,7 +99,7 @@ public class MaturaDataSource {
         StudentSummary studentSummary = null;
 
         try {
-            cursor = database.rawQuery("Select * from statUczen where PESEL=?", new String[] {pesel});
+            cursor = database.rawQuery("Select * from statUczen where PESEL=?", new String[] { pesel });
             if(cursor.getCount() > 0) {
                 // retrieve the data to my custom model
                 cursor.moveToFirst();
@@ -104,7 +108,7 @@ public class MaturaDataSource {
                 String surname = cursor.getString(cursor.getColumnIndex("Nazwisko"));
                 int numberOfExams = cursor.getInt(cursor.getColumnIndex("Ilosc egzaminow"));
                 int passedExams = cursor.getInt(cursor.getColumnIndex("Zdane"));
-                float averageResult = cursor.getFloat(cursor.getColumnIndex("Sredni wynik %"));
+                int averageResult = cursor.getInt(cursor.getColumnIndex("Sredni wynik %"));
 
                 studentSummary = new StudentSummary(peselDatabase, firstName, surname,
                         numberOfExams, passedExams, averageResult);
@@ -117,6 +121,48 @@ public class MaturaDataSource {
         close();
         return studentSummary;
     }
+
+    public synchronized ArrayList<StudentExam> getAllStudentExams (String pesel) throws SQLException {
+        open();
+        Cursor cursor = null;
+        ArrayList<StudentExam> list = new ArrayList<>();
+
+        try {
+            cursor = database.rawQuery("Select E.Przedmiot, E.Poziom, E.Rok, E.Termin+1 AS Termin, " +
+                    "R.Wynik, R.[Wynik proc], R.Zdany  from Egzaminy E Join Rezultaty R ON " +
+                    "E.ID=R.Egzamin where Zdajacy=(Select ID from " +
+                    "Uczniowie where PESEL=?)", new String[] { pesel });
+            if(cursor.getCount() > 0) {
+                // retrieve the data to my custom model
+                cursor.moveToFirst();
+
+                while (!cursor.isAfterLast()) {
+                    StudentExam exam = cursorToStudentExam(cursor);
+                    list.add(exam);
+                    cursor.moveToNext();
+                }
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        close();
+        return list;
+    }
+
+    private StudentExam cursorToStudentExam(Cursor cursor) {
+        String course = cursor.getString(0);
+        int level = cursor.getInt(1);
+        int year = cursor.getInt(2);
+        int time = cursor.getInt(3);
+        int result = cursor.getInt(4);
+        int percent = cursor.getInt(5);
+        boolean passed = cursor.getInt(6) > 0;
+
+        return new StudentExam(course, level, year, time, result, percent, passed);
+    }
+
 /*    public Uczen createComment(String comment) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
@@ -137,33 +183,6 @@ public class MaturaDataSource {
         database.delete(MySQLiteHelper.TABLE_COMMENTS, MySQLiteHelper.COLUMN_ID
                 + " = " + id, null);
     }
-
-    public List<Uczen> getAllComments() {
-        List<Uczen> comments = new ArrayList<Uczen>();
-
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,
-                allColumns, null, null, null, null, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Uczen comment = cursorToComment(cursor);
-            comments.add(comment);
-            cursor.moveToNext();
-        }
-        // make sure to close the cursor
-        cursor.close();
-        return comments;
-    }
-
-    public Uczen getStatUczen() {
-        Uczen
-    }
-
-    private Uczen cursorToComment(Cursor cursor) {
-        Uczen comment = new Uczen();
-        comment.setId(cursor.getLong(0));
-        comment.setComment(cursor.getString(1));
-        return comment;
-    }*/
+*/
 
 }

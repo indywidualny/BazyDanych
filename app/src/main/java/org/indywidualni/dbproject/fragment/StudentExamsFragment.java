@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import org.indywidualni.dbproject.R;
+import org.indywidualni.dbproject.activity.UserActivity;
+import org.indywidualni.dbproject.adapter.StudentExamsAdapter;
 import org.indywidualni.dbproject.database.MaturaDataSource;
 
 /**
@@ -25,6 +28,11 @@ public class StudentExamsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //noinspection ConstantConditions
+        ListView list = (ListView) getView().findViewById(R.id.list);
+        StudentExamsAdapter adapter = new StudentExamsAdapter(getActivity(),
+                dataSource.getAllStudentExams(UserActivity.pesel));
+        list.setAdapter(adapter);
     }
 
 }
