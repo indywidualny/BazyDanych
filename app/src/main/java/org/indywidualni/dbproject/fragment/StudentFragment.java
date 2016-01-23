@@ -59,6 +59,10 @@ public class StudentFragment extends BaseFragment {
                 getChildFragmentManager().beginTransaction().replace(R.id.content_frame,
                         new StudentExamsFragment()).commit();
                 break;
+            case 2:
+                getChildFragmentManager().beginTransaction().replace(R.id.content_frame,
+                        new StudentStatsFragment()).commit();
+                break;
         }
     }
 

@@ -174,11 +174,11 @@ public class MainActivity extends BaseActivity {
                             startActivity(intent);
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(), getString(R.string.wrong_password),
+                        Toast.makeText(getApplicationContext(), getString(R.string.wrong_user_pass),
                                 Toast.LENGTH_SHORT).show();
                     }
                 } catch (SQLException e) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.wrong_user),
+                    Toast.makeText(getApplicationContext(), getString(R.string.wrong_data),
                             Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }

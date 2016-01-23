@@ -2,6 +2,7 @@ package org.indywidualni.dbproject.fragment;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,32 +36,36 @@ public class StudentExamsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final ArrayList<StudentExam> studentExams = dataSource.getAllStudentExams(UserActivity.pesel);
+        try {
+            final ArrayList<StudentExam> studentExams = dataSource.getAllStudentExams(UserActivity.pesel);
 
-        //noinspection ConstantConditions
-        ListView list = (ListView) getView().findViewById(R.id.list);
-        StudentExamsAdapter adapter = new StudentExamsAdapter(getActivity(), studentExams);
-        list.setAdapter(adapter);
+            //noinspection ConstantConditions
+            ListView list = (ListView) getView().findViewById(R.id.list);
+            StudentExamsAdapter adapter = new StudentExamsAdapter(getActivity(), studentExams);
+            list.setAdapter(adapter);
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String examID = studentExams.get(position).getExamID();
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String examID = studentExams.get(position).getExamID();
 
-                // custom dialog
-                final Dialog dialog = new Dialog(getActivity());
-                dialog.setContentView(R.layout.dialog_student_exam);
-                dialog.setTitle(getString(R.string.student_exam_details));
+                    // custom dialog
+                    final Dialog dialog = new Dialog(getActivity());
+                    dialog.setContentView(R.layout.dialog_student_exam);
+                    dialog.setTitle(getString(R.string.student_exam_details));
 
-                dialog.show();
+                    dialog.show();
 
-                final ArrayList<StudentExerciseResult> studentExerciseResult =
-                        dataSource.getStudentExamResult(examID);
-                ListView le = (ListView) dialog.findViewById(R.id.list_exercises);
-                StudentExerciseResultsAdapter sera = new StudentExerciseResultsAdapter(getView().getContext(),
-                        studentExerciseResult);
-                le.setAdapter(sera);
-            }
-        });
+                    final ArrayList<StudentExerciseResult> studentExerciseResult =
+                            dataSource.getStudentExamResult(examID);
+                    ListView le = (ListView) dialog.findViewById(R.id.list_exercises);
+                    StudentExerciseResultsAdapter sera = new StudentExerciseResultsAdapter(getView().getContext(),
+                            studentExerciseResult);
+                    le.setAdapter(sera);
+                }
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

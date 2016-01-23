@@ -5,6 +5,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.indywidualni.dbproject.model.StudentExam;
+import org.indywidualni.dbproject.model.StudentExamsStats;
 import org.indywidualni.dbproject.model.StudentExerciseResult;
 import org.indywidualni.dbproject.model.StudentSummary;
 
@@ -218,7 +219,7 @@ public class MaturaDataSource {
         return new StudentExam(course, level, year, time, result, percent, passed, id);
     }
 
-    public synchronized ArrayList<StudentExerciseResult> getStudentExamResult(String examID) {
+    public synchronized ArrayList<StudentExerciseResult> getStudentExamResult(String examID) throws SQLException {
         open();
         Cursor cursor = null;
         ArrayList<StudentExerciseResult> list = new ArrayList<>();
@@ -246,6 +247,42 @@ public class MaturaDataSource {
 
     private StudentExerciseResult cursorToStudentExercise(Cursor cursor) {
         return new StudentExerciseResult(cursor.getInt(1), cursor.getInt(2), cursor.getString(3));
+    }
+
+    public synchronized StudentExamsStats getStudentExamStats(
+            String przedmiot, String rok, String poziom, String termin) throws SQLException {
+        open();
+        Cursor cursor = null;
+        StudentExamsStats stats = null;
+
+        try {
+            String q = "SELECT * from statEgzamin WHERE poziom=" + poziom + " and termin="
+                    + termin + " and rok=" + rok + " and przedmiot like %s";
+            String query = String.format(q, "\""+ przedmiot + "%\"");
+            cursor = database.rawQuery(query, null);
+
+            if(cursor.getCount() > 0) {
+                // retrieve the data to my custom model
+                cursor.moveToFirst();
+
+                int year = cursor.getInt(cursor.getColumnIndex("Rok"));
+                String subject = cursor.getString(cursor.getColumnIndex("Przedmiot"));
+                int level = cursor.getInt(cursor.getColumnIndex("Poziom"));
+                int time = cursor.getInt(cursor.getColumnIndex("Termin"));
+                int students = cursor.getInt(cursor.getColumnIndex("Ilosc zdajacych"));
+                int avrg = cursor.getInt(cursor.getColumnIndex("Sredni wynik"));
+                int percent = cursor.getInt(cursor.getColumnIndex("Sredni wynik %"));
+                int passed = cursor.getInt(cursor.getColumnIndex("Zdawalnosc"));
+
+                stats = new StudentExamsStats(year, subject, level, time, students, avrg, percent, passed);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        close();
+        return stats;
     }
 
 /*    public Uczen createComment(String comment) {

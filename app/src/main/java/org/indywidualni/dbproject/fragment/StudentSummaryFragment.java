@@ -39,8 +39,8 @@ public class StudentSummaryFragment extends Fragment {
         try {
             final StudentSummary studentSummary = dataSource.getStudentSummary(UserActivity.pesel);
 
-            /** App is in only one language so let's do a bad thing and leave hardcoded
-             *  strings. Normally strings should be got from resources and formatted.
+            /* App is in only one language so let's do a bad thing and leave hardcoded
+             * strings. Normally strings should be got from resources and formatted.
              */
             String peselLine = "PESEL: " + studentSummary.getPesel();
             String nameLine = studentSummary.getFirstName() + " " + studentSummary.getSurname();

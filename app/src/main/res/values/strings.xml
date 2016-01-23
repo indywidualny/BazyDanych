@@ -10,7 +10,8 @@
     <string name="unsupported_encoding">Niewspierane kodowanie</string>
     <string name="no_such_algorithm">Brak algorytmu</string>
     <string name="wrong_password">Niepoprawne hasło</string>
-    <string name="wrong_user">Niepoprawne dane</string>
+    <string name="wrong_user_pass">Niepoprawne dane</string>
+    <string name="wrong_data">Błąd bazy</string>
     <string name="project_github">GitHub projektu</string>
     <string name="admin_logged_in">Zalogowano jako administrator</string>
     <string name="loading_view">Ładuję odpowiedni widok</string>
@@ -18,6 +19,7 @@
     <string name="hello_teacher">Witaj nauczycielu!</string>
     <string name="hello_student">Witaj uczniu!</string>
     <string name="student_exam_details">Szczegółowe wyniki</string>
+    <string name="admin_permission">Administrator może zmieniać hasła użytkowników</string>
 
     <string-array name="planets_array">
         <item>Podsumowanie </item>
@@ -34,7 +36,6 @@
         <item>Podsumowanie </item>
         <item>Egzaminy</item>
         <item>Statystyki</item>
-        <item>Personalia</item>
     </string-array>
 
 </resources>

@@ -27,6 +27,8 @@ public class AdminFragment extends Fragment {
 
         Toast.makeText(getActivity(), getString(R.string.admin_logged_in),
                 Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), getString(R.string.admin_permission),
+                Toast.LENGTH_SHORT).show();
     }
 
 }
