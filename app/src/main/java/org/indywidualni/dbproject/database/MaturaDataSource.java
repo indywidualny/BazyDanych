@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.indywidualni.dbproject.model.AdminUser;
 import org.indywidualni.dbproject.model.StudentExam;
 import org.indywidualni.dbproject.model.StudentExamsStats;
 import org.indywidualni.dbproject.model.StudentExerciseResult;
@@ -285,6 +286,37 @@ public class MaturaDataSource {
         return stats;
     }
 
+    public synchronized ArrayList<AdminUser> getAllUsers() throws SQLException {
+        open();
+        Cursor cursor = null;
+        ArrayList<AdminUser> list = new ArrayList<>();
+
+        try {
+            cursor = database.rawQuery("Select * from Osoby", new String[] { null });
+            if(cursor.getCount() > 0) {
+                // retrieve the data to my custom model
+                cursor.moveToFirst();
+
+                while (!cursor.isAfterLast()) {
+                    AdminUser user = cursorToUsers(cursor);
+                    list.add(user);
+                    cursor.moveToNext();
+                }
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        close();
+        return list;
+    }
+
+    private AdminUser cursorToUsers(Cursor cursor) {
+        return new AdminUser(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
+                cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6),
+                cursor.getString(7), cursor.getString(8), cursor.getInt(9), cursor.getInt(10));
+    }
 /*    public Uczen createComment(String comment) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_COMMENT, comment);

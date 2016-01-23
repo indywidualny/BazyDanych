@@ -29,6 +29,8 @@ public class AdminFragment extends Fragment {
                 Toast.LENGTH_SHORT).show();
         Toast.makeText(getActivity(), getString(R.string.admin_permission),
                 Toast.LENGTH_SHORT).show();
+
+        // todo: wyswietlic liste uzytkownikow
     }
 
 }
