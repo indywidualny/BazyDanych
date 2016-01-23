@@ -5,7 +5,7 @@ package org.indywidualni.dbproject.model;
  */
 public class StudentExam {
 
-    public StudentExam(String c, int l, int y, int t, int r, int p, boolean pass) {
+    public StudentExam(String c, int l, int y, int t, int r, int p, boolean pass, int id) {
         course = c;
         level = l;
         year = y;
@@ -13,6 +13,7 @@ public class StudentExam {
         result = r;
         percent = p;
         passed = pass;
+        examID = id;
     }
 
     private String course;
@@ -22,6 +23,7 @@ public class StudentExam {
     private int result;
     private int percent;
     private boolean passed;
+    private int examID;
 
     public String getCourse() {
         return course;
@@ -49,6 +51,10 @@ public class StudentExam {
 
     public boolean getPassed() {
         return passed;
+    }
+
+    public String getExamID() {
+        return Integer.toString(examID);
     }
 
 }

@@ -129,7 +129,7 @@ public class MaturaDataSource {
 
         try {
             cursor = database.rawQuery("Select E.Przedmiot, E.Poziom, E.Rok, E.Termin+1 AS Termin, " +
-                    "R.Wynik, R.[Wynik proc], R.Zdany  from Egzaminy E Join Rezultaty R ON " +
+                    "R.Wynik, R.[Wynik proc], R.Zdany, E.ID from Egzaminy E Join Rezultaty R ON " +
                     "E.ID=R.Egzamin where Zdajacy=(Select ID from " +
                     "Uczniowie where PESEL=?)", new String[] { pesel });
             if(cursor.getCount() > 0) {
@@ -159,9 +159,40 @@ public class MaturaDataSource {
         int result = cursor.getInt(4);
         int percent = cursor.getInt(5);
         boolean passed = cursor.getInt(6) > 0;
+        int id = cursor.getInt(7);
 
-        return new StudentExam(course, level, year, time, result, percent, passed);
+        return new StudentExam(course, level, year, time, result, percent, passed, id);
     }
+
+/*    public synchronized ArrayList<String> StudentExamResult(String examID) {
+        open();
+        Cursor cursor = null;
+        ArrayList<String> list = new ArrayList<>();
+
+        try {
+            cursor = database.rawQuery("Select [Nr zadania], Punkty, [Opis Oceny] from Punkty " +
+                    "Where [Nr egzaminu] = ?", new String[] { examID });
+            if(cursor.getCount() > 0) {
+                // retrieve the data to my custom model
+                cursor.moveToFirst();
+
+                list.add(cursor.getString(0));
+                int level = cursor.getInt(1);
+                int year = cursor.getInt(2);
+                int time = cursor.getInt(3);
+                int result = cursor.getInt(4);
+                int percent = cursor.getInt(5);
+                boolean passed = cursor.getInt(6) > 0;
+                int id = cursor.getInt(7);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        close();
+        return list;
+    }*/
 
 /*    public Uczen createComment(String comment) {
         ContentValues values = new ContentValues();

@@ -17,6 +17,7 @@
     <string name="github_url">https://github.com/indywidualny/BazyDanych</string>
     <string name="hello_teacher">Witaj nauczycielu!</string>
     <string name="hello_student">Witaj uczniu!</string>
+    <string name="student_exam_details">Szczegółowe wyniki</string>
 
     <string-array name="planets_array">
         <item>Podsumowanie </item>
