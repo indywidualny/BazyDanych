@@ -122,7 +122,7 @@ public class AdminFragment extends ListFragment implements AdapterView.OnItemCli
                 String passwordHash = null;
 
                 // password cannot be too short
-                if (pass.getText().toString().length() < 5) {
+                if (pass.getText().toString().length() < 4) {
                     Toast.makeText(getActivity(), getString(R.string.pass_too_short),
                             Toast.LENGTH_SHORT).show();
                     return;

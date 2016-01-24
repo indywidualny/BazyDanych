@@ -13,11 +13,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.indywidualni.dbproject.R;
+import org.indywidualni.dbproject.activity.UserActivity;
 import org.indywidualni.dbproject.adapter.TeacherExamsAdapter;
 import org.indywidualni.dbproject.database.MaturaDataSource;
-import org.indywidualni.dbproject.model.PointDistribution;
 import org.indywidualni.dbproject.model.TeacherExam;
 
 import java.util.ArrayList;
@@ -96,19 +97,29 @@ public class TeacherGradeFragment extends Fragment {
             }
         });
 
-        adb.setPositiveButton(getString(R.string.dialog_positive_login), new DialogInterface.OnClickListener() {
+        adb.setPositiveButton(getString(R.string.set_grade), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 try {
-                    ArrayList<PointDistribution> distribution = dataSource.getPointDistribution(examID);
-
                     String exNumber = number.getText().toString();
                     String exPoints = points.getText().toString();
                     String exComment = comment.getText().toString();
+                    String exID = Integer.toString(dataSource.getExaminatorId(UserActivity.getCurrentPesel()));
 
-                    // todo: sprawdzić czy poprawne wartości według rozkładu i dodać
+                    if ((Integer.parseInt(exNumber) > 0 && Integer.parseInt(exNumber) <= exercisesNumber) &&
+                            (Integer.parseInt(exPoints) >= 0 && Integer.parseInt(exPoints) <=
+                                    dataSource.getMaxPointsForExercise(examID, number.getText().toString()))) {
 
-                } catch (SQLException e) {
+                        dataSource.teacherInsertOrUpdatePoints(examID, exNumber, exPoints, exComment, exID);
+
+                        Toast.makeText(getActivity(), getString(R.string.set_grade_success),
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.set_grade_fail),
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (SQLException | NumberFormatException | NullPointerException e) {
                     e.printStackTrace();
                 }
             }

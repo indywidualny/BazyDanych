@@ -21,6 +21,10 @@ public class AdminActivity extends BaseActivity {
 
     private static final String TAG = AdminActivity.class.getSimpleName();
 
+    /**
+     * Called when the activity is created.
+     * @param savedInstanceState saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,11 @@ public class AdminActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Inflate menu, admin has a different menu
+     * @param menu menu
+     * @return always true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -43,6 +52,11 @@ public class AdminActivity extends BaseActivity {
         return true;
     }
 
+    /**
+     * Handle menu clicks for admin menu
+     * @param item menu item
+     * @return true if item found, call the parent if not
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -58,6 +72,9 @@ public class AdminActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Method which opens system app page, to cleanup app data
+     */
     private void openAppSettingsSystemActivity() {
         Toast.makeText(this, getString(R.string.remove_app_data),
                 Toast.LENGTH_SHORT).show();

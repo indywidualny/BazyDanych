@@ -65,6 +65,11 @@ public class UserActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Looks like not important because it does nothing?
+     * Well it overrides a default method, which I wanted to disable
+     * @param outState out state
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         // do nothing

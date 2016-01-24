@@ -67,15 +67,6 @@ public class TeacherFragment extends BaseFragment {
                     Toast.makeText(getActivity(), getString(R.string.teacher_cannot_grade),
                             Toast.LENGTH_SHORT).show();
                 break;
-            case 2:
-
-                break;
-            case 3:
-
-                break;
-            case 4:
-
-                break;
         }
     }
 

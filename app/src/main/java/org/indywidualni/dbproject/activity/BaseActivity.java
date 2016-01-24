@@ -17,6 +17,11 @@ import org.indywidualni.dbproject.R;
  */
 public class BaseActivity extends AppCompatActivity {
 
+    /**
+     * Inflate a default menu
+     * @param menu menu
+     * @return always true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -24,6 +29,11 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Handle default menu clicks
+     * @param item menu item
+     * @return if clicked, true, else: call for parent
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

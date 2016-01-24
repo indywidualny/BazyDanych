@@ -3,6 +3,7 @@ package org.indywidualni.dbproject.database;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import org.indywidualni.dbproject.model.AdminUser;
 import org.indywidualni.dbproject.model.PointDistribution;
@@ -12,7 +13,6 @@ import org.indywidualni.dbproject.model.StudentExerciseResult;
 import org.indywidualni.dbproject.model.StudentSummary;
 import org.indywidualni.dbproject.model.TeacherExam;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -182,7 +182,7 @@ public class MaturaDataSource {
         ArrayList<StudentExam> list = new ArrayList<>();
 
         try {
-            cursor = database.rawQuery("Select E.Przedmiot, E.Poziom, E.Rok, E.Termin+1 AS Termin, " +
+            cursor = database.rawQuery("Select E.Przedmiot, E.Poziom, E.Rok, E.Termin AS Termin, " +
                     "R.Wynik, R.[Wynik proc], R.Zdany, R.[Nr egzaminu] from Egzaminy E Join Rezultaty R ON " +
                     "E.ID=R.Egzamin where Zdajacy=(Select ID from " +
                     "Uczniowie where PESEL=?)", new String[] { pesel });
@@ -223,6 +223,12 @@ public class MaturaDataSource {
         return new StudentExam(course, level, year, time, result, percent, passed, id);
     }
 
+    /**
+     * Get exam results for a student
+     * @param examID exam ID
+     * @return a list of single exercises
+     * @throws SQLException
+     */
     public synchronized ArrayList<StudentExerciseResult> getStudentExamResult(String examID) throws SQLException {
         open();
         Cursor cursor = null;
@@ -249,10 +255,25 @@ public class MaturaDataSource {
         return list;
     }
 
+    /**
+     * Cursor to student exercise
+     * @param cursor cursor
+     * @return a single exercise
+     */
     private StudentExerciseResult cursorToStudentExercise(Cursor cursor) {
         return new StudentExerciseResult(cursor.getInt(1), cursor.getInt(2), cursor.getString(3));
     }
 
+    /**
+     * Get all student's exams global stats. Just to check what are the average
+     * results for all the exams
+     * @param przedmiot subject
+     * @param rok year
+     * @param poziom level
+     * @param termin time
+     * @return a single exam stats object
+     * @throws SQLException
+     */
     public synchronized StudentExamsStats getStudentExamStats(
             String przedmiot, String rok, String poziom, String termin) throws SQLException {
         open();
@@ -289,6 +310,11 @@ public class MaturaDataSource {
         return stats;
     }
 
+    /**
+     * Get all user's details. Used by an admin to check information about users
+     * @return a list of user objects
+     * @throws SQLException
+     */
     public synchronized ArrayList<AdminUser> getAllUsers() throws SQLException {
         open();
         Cursor cursor = null;
@@ -315,18 +341,35 @@ public class MaturaDataSource {
         return list;
     }
 
+    /**
+     * Cursor to get a single user data
+     * @param cursor cursor
+     * @return a single user object
+     */
     private AdminUser cursorToUsers(Cursor cursor) {
         return new AdminUser(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
                 cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6),
                 cursor.getString(7), cursor.getString(8), cursor.getInt(9), cursor.getInt(10));
     }
 
+    /**
+     * Change user's password. Used by the admin
+     * @param pesel pesel of an user
+     * @param password new password
+     * @throws SQLException
+     */
     public synchronized void changeUserPassword(String pesel, String password) throws SQLException {
         open();
         database.execSQL("UPDATE Osoby SET Haslo='" + password + "' WHERE PESEL=" + pesel);
         close();
     }
 
+    /**
+     * Get all the teacher's student's
+     * @param pesel pesel of a teacher
+     * @return a list of single student summaries
+     * @throws SQLException
+     */
     public synchronized ArrayList<StudentSummary> getTeacherStudents(String pesel) throws SQLException {
         open();
         Cursor cursor = null;
@@ -354,11 +397,21 @@ public class MaturaDataSource {
         return list;
     }
 
+    /**
+     * Cursor to get info about a single student
+     * @param cursor cursor
+     * @return a single student summary
+     */
     private StudentSummary cursorToTeacherStudents(Cursor cursor) {
         return new StudentSummary(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
                 cursor.getInt(3), cursor.getInt(4), cursor.getInt(5));
     }
 
+    /**
+     * Get all the exams in order to be able to grade them
+     * @return all the existing exams
+     * @throws SQLException
+     */
     public synchronized ArrayList<TeacherExam> getTeacherAllExams() throws SQLException {
         open();
         Cursor cursor = null;
@@ -385,11 +438,22 @@ public class MaturaDataSource {
         return list;
     }
 
+    /**
+     * cursor to get data about a single exam
+     * @param cursor cursor
+     * @return a single exam object for a teacher
+     */
     private TeacherExam cursorToTeacherAllExams(Cursor cursor) {
         return new TeacherExam(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
                 cursor.getInt(4), cursor.getInt(5), cursor.getInt(6));
     }
 
+    /**
+     * Check is teacher permitted to grade students
+     * @param pesel pesel of a teacher
+     * @return can grade or cannot grade
+     * @throws SQLException
+     */
     public synchronized boolean isTeacherPermitted(String pesel) throws SQLException {
         open();
         Cursor cursor = null;
@@ -408,8 +472,14 @@ public class MaturaDataSource {
         return canGrade;
     }
 
+    /**
+     * Get point distribution for all the exercises of a given exam
+     * @param examID a given exam id
+     * @return a list of a single exercise information
+     * @throws SQLException
+     */
     public synchronized ArrayList<PointDistribution> getPointDistribution(String examID)
-            throws SQLException {
+            throws SQLException {  // not used anywhere
         open();
         Cursor cursor = null;
         ArrayList<PointDistribution> pointDistributions = new ArrayList<>();
@@ -436,10 +506,22 @@ public class MaturaDataSource {
         return pointDistributions;
     }
 
+    /**
+     * Cursor to get points distribution
+     * @param cursor cursor
+     * @return a single point distribution object
+     */
     private PointDistribution cursorToPointDistribution(Cursor cursor) {
         return new PointDistribution(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2));
     }
 
+    /**
+     * Get maximum number of points possible for an exercise
+     * @param examID exam id
+     * @param exercise exercise
+     * @return maximum number of points
+     * @throws SQLException
+     */
     public synchronized int getMaxPointsForExercise(String examID, String exercise)
             throws SQLException {
         open();
@@ -462,26 +544,53 @@ public class MaturaDataSource {
         return max;
     }
 
-/*    public Uczen createComment(String comment) {
-        ContentValues values = new ContentValues();
-        values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
-        long insertId = database.insert(MySQLiteHelper.TABLE_COMMENTS, null,
-                values);
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,
-                allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
-                null, null, null);
-        cursor.moveToFirst();
-        Uczen newComment = cursorToComment(cursor);
-        cursor.close();
-        return newComment;
+    /** Get ID of a teacher which is permitted to grade
+     * @param pesel teacher's pesel
+     * @return an id of a permitted teacher
+     * @throws SQLException
+     */
+    public synchronized int getExaminatorId(String pesel) throws SQLException {
+        open();
+        Cursor cursor = null;
+        int id = -1;
+
+        try {
+            cursor = database.rawQuery("SELECT ID FROM Nauczyciele WHERE pesel=?", new String[] { pesel });
+            if(cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                id = cursor.getInt(cursor.getColumnIndex("ID"));
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        close();
+        return id;
     }
 
-    public void deleteComment(Uczen comment) {
-        long id = comment.getId();
-        System.out.println("Comment deleted with id: " + id);
-        database.delete(MySQLiteHelper.TABLE_COMMENTS, MySQLiteHelper.COLUMN_ID
-                + " = " + id, null);
+    /**
+     * Update or insert points for a single exercise
+     * @param id exam id
+     * @param ex exercise number
+     * @param points new number of points
+     * @param description description for the grade
+     * @param teacher teacher who is going to grade this exercise
+     * @throws SQLException
+     */
+    public synchronized void teacherInsertOrUpdatePoints(
+            String id, String ex, String points, String description, String teacher)
+            throws SQLException {
+        open();
+
+        String query = "INSERT or REPLACE INTO Punkty ([Nr egzaminu], [Nr zadania], Punkty, [Opis oceny], Oceniajacy) " +
+                "values (" + id + ", " + ex + ", " + points + ", \"" + description + "\", " + teacher + ");";
+        Log.v("insertOrUpdatePoints", query);
+
+        database.execSQL(query);
+/*        database.rawQuery("INSERT or REPLACE INTO Punkty ([Nr egzaminu], [Nr zadania], Punkty, [Opis oceny], Oceniajacy) " +
+                "values (?, ?, ?, ?, ?)", new String[] { id, ex, points, description, teacher});*/
+        close();
     }
-*/
 
 }

@@ -14,13 +14,27 @@ import java.util.ArrayList;
 
 /**
  * Created by Krzysztof Grabowski on 24.01.16.
+ * List adapter
  */
 public class TeacherExamsAdapter extends ArrayAdapter<TeacherExam> {
 
+    /**
+     * Class constructor
+     * @param context context
+     * @param items items
+     */
     public TeacherExamsAdapter(Context context, ArrayList<TeacherExam> items) {
         super(context, 0, items);
     }
 
+    /**
+     * Every list view item is processed here to make it look just
+     * like I want to.
+     * @param position position
+     * @param convertView convertView
+     * @param parent parent
+     * @return a converted view
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         TeacherExam item = getItem(position);

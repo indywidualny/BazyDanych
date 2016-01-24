@@ -26,7 +26,7 @@
     <string name="password_not_changed">Zmiana nie powiodła się</string>
     <string name="password_changed">Hasło zmienione</string>
     <string name="reset_database">Zresetuj bazę</string>
-    <string name="pass_too_short">Hasło musi mieć co najmniej 5 znaków</string>
+    <string name="pass_too_short">Hasło musi mieć co najmniej 4 znaki</string>
     <string name="remove_app_data">Po prostu wyczyść dane tej aplikacji ;)</string>
     <string name="teacher_cannot_grade">Brak uprawnień egzaminatora</string>
     <string name="grade_an_exam">Wpisywanie ocen</string>
@@ -34,6 +34,9 @@
     <string name="comment">Komentarz</string>
     <string name="ex_number">Numer zadania</string>
     <string name="max_points_grade">Punkty</string>
+    <string name="set_grade">Ustaw</string>
+    <string name="set_grade_success">Sukces</string>
+    <string name="set_grade_fail">Niepoprawne dane</string>
 
     <string-array name="student_array">
         <item>Podsumowanie </item>
@@ -45,9 +48,6 @@
     <string-array name="teacher_array">
         <item>Moi uczniowie </item>
         <item>Oceniaj</item>
-        <item>Szkoły</item>
-        <item>Miasta</item>
-        <item>Globalnie</item>
     </string-array>
 
 </resources>

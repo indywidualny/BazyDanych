@@ -20,10 +20,18 @@ public class MyApplication extends Application {
         super.onCreate();
     }
 
+    /**
+     * Get admin password hardcoded in the app
+     * @return password halted hash
+     */
     public static String getAdminPassword() {
         return adminPassword;
     }
 
+    /**
+     * Context of application for non-context classes
+     * @return application context
+     */
     public static Context getContextOfApplication() {
         return context;
     }
