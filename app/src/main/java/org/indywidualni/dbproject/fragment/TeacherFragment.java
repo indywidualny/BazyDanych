@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.indywidualni.dbproject.R;
+import org.indywidualni.dbproject.activity.UserActivity;
+import org.indywidualni.dbproject.database.MaturaDataSource;
 
 /**
  * Created by Krzysztof Grabowski on 22.01.16.
@@ -17,6 +20,7 @@ import org.indywidualni.dbproject.R;
 public class TeacherFragment extends BaseFragment {
 
     private static final String TAG = TeacherFragment.class.getSimpleName();
+    private MaturaDataSource dataSource = MaturaDataSource.getInstance();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,12 @@ public class TeacherFragment extends BaseFragment {
                         new TeacherMyStudentsFragment()).commit();
                 break;
             case 1:
-
+                if (dataSource.isTeacherPermitted(UserActivity.getCurrentPesel()))
+                    getChildFragmentManager().beginTransaction().replace(R.id.content_frame,
+                            new TeacherGradeFragment()).commit();
+                else
+                    Toast.makeText(getActivity(), getString(R.string.teacher_cannot_grade),
+                            Toast.LENGTH_SHORT).show();
                 break;
             case 2:
 
@@ -65,9 +74,6 @@ public class TeacherFragment extends BaseFragment {
 
                 break;
             case 4:
-
-                break;
-            case 5:
 
                 break;
         }

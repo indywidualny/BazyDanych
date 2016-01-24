@@ -70,7 +70,7 @@ public class TeacherMyStudentsFragment extends Fragment {
                         le.setAdapter(sea);
 
                         // set padding for a list
-                        le.setPadding(14, 14, 14, 14);
+                        le.setPadding(17, 0, 17, 0);
 
                         /** get detailed results for a clicked exam, another dialog */
                         le.setOnItemClickListener(new AdapterView.OnItemClickListener() {

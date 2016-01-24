@@ -5,11 +5,14 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.indywidualni.dbproject.model.AdminUser;
+import org.indywidualni.dbproject.model.PointDistribution;
 import org.indywidualni.dbproject.model.StudentExam;
 import org.indywidualni.dbproject.model.StudentExamsStats;
 import org.indywidualni.dbproject.model.StudentExerciseResult;
 import org.indywidualni.dbproject.model.StudentSummary;
+import org.indywidualni.dbproject.model.TeacherExam;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -31,7 +34,7 @@ public class MaturaDataSource {
      * We want to make it thread safe, so the best way of achieving it is just to
      * get an instance of this object every time we need it and don't worry about
      * our future. Singleton pattern is rather a popular one.
-     * @return an instance of this class
+     * @return an instance of this object
      */
     public static MaturaDataSource getInstance() {
         if (instance == null) {
@@ -354,6 +357,109 @@ public class MaturaDataSource {
     private StudentSummary cursorToTeacherStudents(Cursor cursor) {
         return new StudentSummary(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
                 cursor.getInt(3), cursor.getInt(4), cursor.getInt(5));
+    }
+
+    public synchronized ArrayList<TeacherExam> getTeacherAllExams() throws SQLException {
+        open();
+        Cursor cursor = null;
+        ArrayList<TeacherExam> list = new ArrayList<>();
+
+        try {
+            cursor = database.rawQuery("SELECT * FROM Egzaminy", new String[] {});
+            if(cursor.getCount() > 0) {
+                // retrieve the data to my custom model
+                cursor.moveToFirst();
+
+                while (!cursor.isAfterLast()) {
+                    TeacherExam exam = cursorToTeacherAllExams(cursor);
+                    list.add(exam);
+                    cursor.moveToNext();
+                }
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        close();
+        return list;
+    }
+
+    private TeacherExam cursorToTeacherAllExams(Cursor cursor) {
+        return new TeacherExam(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
+                cursor.getInt(4), cursor.getInt(5), cursor.getInt(6));
+    }
+
+    public synchronized boolean isTeacherPermitted(String pesel) throws SQLException {
+        open();
+        Cursor cursor = null;
+        boolean canGrade = false;
+
+        try {
+            cursor = database.rawQuery("SELECT Uprawnienia FROM Nauczyciele where pesel=? " +
+                    "and Uprawnienia=1", new String[] { pesel });
+            canGrade = cursor.getCount() == 1;
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        close();
+        return canGrade;
+    }
+
+    public synchronized ArrayList<PointDistribution> getPointDistribution(String examID)
+            throws SQLException {
+        open();
+        Cursor cursor = null;
+        ArrayList<PointDistribution> pointDistributions = new ArrayList<>();
+
+        try {
+            cursor = database.rawQuery("SELECT * FROM [Rozklad Punktow] where Egzamin=?",
+                    new String[] { examID });
+            if(cursor.getCount() > 0) {
+                // retrieve the data to my custom model
+                cursor.moveToFirst();
+
+                while (!cursor.isAfterLast()) {
+                    PointDistribution points = cursorToPointDistribution(cursor);
+                    pointDistributions.add(points);
+                    cursor.moveToNext();
+                }
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        close();
+        return pointDistributions;
+    }
+
+    private PointDistribution cursorToPointDistribution(Cursor cursor) {
+        return new PointDistribution(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2));
+    }
+
+    public synchronized int getMaxPointsForExercise(String examID, String exercise)
+            throws SQLException {
+        open();
+        Cursor cursor = null;
+        int max = 0;
+
+        try {
+            cursor = database.rawQuery("SELECT * FROM [Rozklad Punktow] " +
+                    "where [Nr zadania]=? and Egzamin=?", new String[] { exercise, examID });
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                max = cursor.getInt(cursor.getColumnIndex("Max pkt"));
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        close();
+        return max;
     }
 
 /*    public Uczen createComment(String comment) {

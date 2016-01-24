@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <ListView
-        android:id="@+id/list_my_students"
+        android:id="@+id/list_all_exams"
         android:dividerHeight="1dp"
         android:divider="@drawable/list_divider"
         android:layout_width="match_parent"
