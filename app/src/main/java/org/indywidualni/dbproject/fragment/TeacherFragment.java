@@ -26,7 +26,7 @@ public class TeacherFragment extends BaseFragment {
         Spinner spinner = (Spinner) getActivity().findViewById(R.id.spinner_nav);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.planets_array, R.layout.spinner_item);
+                R.array.teacher_array, R.layout.spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -49,6 +49,28 @@ public class TeacherFragment extends BaseFragment {
                                int pos, long id) {
         super.onItemSelected(parent, view, pos, id);
         Log.v(TAG, "Spinner position: " + pos);
+
+        switch (pos) {
+            case 0:
+                getChildFragmentManager().beginTransaction().replace(R.id.content_frame,
+                        new TeacherMyStudentsFragment()).commit();
+                break;
+            case 1:
+
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+
+                break;
+        }
     }
 
 }

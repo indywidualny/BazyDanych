@@ -324,6 +324,38 @@ public class MaturaDataSource {
         close();
     }
 
+    public synchronized ArrayList<StudentSummary> getTeacherStudents(String pesel) throws SQLException {
+        open();
+        Cursor cursor = null;
+        ArrayList<StudentSummary> list = new ArrayList<>();
+
+        try {
+            cursor = database.rawQuery("Select * from  statUczen where PESEL IN (Select Pesel from Uczniowie " +
+                    "Where Wychowawca=(select ID from Nauczyciele where PESEL=?))", new String[] { pesel });
+            if(cursor.getCount() > 0) {
+                // retrieve the data to my custom model
+                cursor.moveToFirst();
+
+                while (!cursor.isAfterLast()) {
+                    StudentSummary student = cursorToTeacherStudents(cursor);
+                    list.add(student);
+                    cursor.moveToNext();
+                }
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        close();
+        return list;
+    }
+
+    private StudentSummary cursorToTeacherStudents(Cursor cursor) {
+        return new StudentSummary(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
+                cursor.getInt(3), cursor.getInt(4), cursor.getInt(5));
+    }
+
 /*    public Uczen createComment(String comment) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_COMMENT, comment);

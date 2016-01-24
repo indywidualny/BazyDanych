@@ -30,22 +30,20 @@
     <string name="remove_app_data">Po prostu wyczyść dane tej aplikacji ;)</string>
     <string name="new_password" tools:ignore="Typos">Nowe hasło</string>
 
-    <string-array name="planets_array">
-        <item>Podsumowanie </item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
-
     <string-array name="student_array">
         <item>Podsumowanie </item>
         <item>Egzaminy</item>
         <item>Statystyki</item>
         <item>Diagram</item>
+    </string-array>
+
+    <string-array name="teacher_array">
+        <item>Moi uczniowie </item>
+        <item>Oceniaj</item>
+        <item>Szkoły</item>
+        <item>Miasta</item>
+        <item>Globalnie</item>
+        <item>Profil</item>
     </string-array>
 
 </resources>
