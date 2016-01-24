@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">Wyniki Matur</string>
     <string name="user">Użytkownik</string>
@@ -27,6 +27,7 @@
     <string name="password_changed">Hasło zmienione</string>
     <string name="reset_database">Zresetuj bazę</string>
     <string name="remove_app_data">Po prostu wyczyść dane tej aplikacji ;)</string>
+    <string name="new_password" tools:ignore="Typos">Nowe hasło</string>
 
     <string-array name="planets_array">
         <item>Podsumowanie </item>
@@ -43,7 +44,7 @@
         <item>Podsumowanie </item>
         <item>Egzaminy</item>
         <item>Statystyki</item>
-        <item>Wykres</item>
+        <item>Diagram</item>
     </string-array>
 
 </resources>

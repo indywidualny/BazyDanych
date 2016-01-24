@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.db.chart.model.BarSet;
-import com.db.chart.model.ChartSet;
 import com.db.chart.view.BarChartView;
 
 import org.indywidualni.dbproject.R;
