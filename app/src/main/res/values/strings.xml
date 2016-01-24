@@ -21,6 +21,12 @@
     <string name="student_exam_details">Szczegółowe wyniki</string>
     <string name="admin_permission">Administrator może zmieniać hasła wszystkich użytkowników</string>
     <string name="change_password">Zmień hasło</string>
+    <string name="change_password_positive">Zmień</string>
+    <string name="change_password_negative">Anuluj</string>
+    <string name="password_not_changed">Zmiana nie powiodła się</string>
+    <string name="password_changed">Hasło zmienione</string>
+    <string name="reset_database">Zresetuj bazę</string>
+    <string name="remove_app_data">Po prostu wyczyść dane tej aplikacji ;)</string>
 
     <string-array name="planets_array">
         <item>Podsumowanie </item>
@@ -37,10 +43,7 @@
         <item>Podsumowanie </item>
         <item>Egzaminy</item>
         <item>Statystyki</item>
-    </string-array>
-
-    <string-array name="admin_array">
-        <item>Edycja haseł </item>
+        <item>Wykres</item>
     </string-array>
 
 </resources>

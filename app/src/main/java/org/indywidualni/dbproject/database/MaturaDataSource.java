@@ -317,6 +317,13 @@ public class MaturaDataSource {
                 cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6),
                 cursor.getString(7), cursor.getString(8), cursor.getInt(9), cursor.getInt(10));
     }
+
+    public synchronized void changeUserPassword(String pesel, String password) throws SQLException {
+        open();
+        database.execSQL("UPDATE Osoby SET Haslo='" + password + "' WHERE PESEL=" + pesel);
+        close();
+    }
+
 /*    public Uczen createComment(String comment) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_COMMENT, comment);

@@ -1,7 +1,5 @@
 package org.indywidualni.dbproject.model;
 
-import java.text.DateFormat;
-
 /**
  * Created by Krzysztof Grabowski on 23.01.16.
  */
