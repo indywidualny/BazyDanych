@@ -182,7 +182,7 @@ public class MaturaDataSource {
         ArrayList<StudentExam> list = new ArrayList<>();
 
         try {
-            cursor = database.rawQuery("Select E.Przedmiot, E.Poziom, E.Rok, E.Termin AS Termin, " +
+            cursor = database.rawQuery("Select E.Przedmiot, E.Poziom, E.Rok, E.Termin+1 AS Termin, " +
                     "R.Wynik, R.[Wynik proc], R.Zdany, R.[Nr egzaminu] from Egzaminy E Join Rezultaty R ON " +
                     "E.ID=R.Egzamin where Zdajacy=(Select ID from " +
                     "Uczniowie where PESEL=?)", new String[] { pesel });

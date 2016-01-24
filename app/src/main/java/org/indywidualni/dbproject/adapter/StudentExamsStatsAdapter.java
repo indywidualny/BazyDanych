@@ -51,10 +51,16 @@ public class StudentExamsStatsAdapter extends ArrayAdapter<StudentExamsStats> {
         /* App is in only one language so let's do a bad thing and leave hardcoded
          * strings. Normally strings should be got from resources and formatted.
          */
-        String firstLine = item.getPrzedmiot() + " (poziom " + item.getPoziom() + ")";
-        String secondLine = "Średni wynik: " + item.getSrednio() + " punktów  (" + item.getSrednioProcent()  + "%)";
-        String thirdLine = item.getZdajacy() + " osób zdawało " + item.getTermin() + " termin";
-        String fourthLine = "Zdawalność: " + item.getZdawalnosc() + "%";
+        String firstLine = "";
+        String secondLine = "";
+        String thirdLine = "";
+        String fourthLine = "";
+        if (item != null) {
+            firstLine = item.getPrzedmiot() + " (poziom " + item.getPoziom() + ")";
+            secondLine = "Średni wynik: " + item.getSrednio() + " punktów  (" + item.getSrednioProcent() + "%)";
+            thirdLine = item.getZdajacy() + " osób zdawało " + item.getTermin() + " termin";
+            fourthLine = "Zdawalność: " + item.getZdawalnosc() + "%";
+        }
 
         first.setText(firstLine);
         second.setText(secondLine);
