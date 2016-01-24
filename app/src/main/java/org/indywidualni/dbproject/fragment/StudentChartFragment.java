@@ -3,13 +3,16 @@ package org.indywidualni.dbproject.fragment;
 import android.app.Fragment;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.db.chart.model.BarSet;
 import com.db.chart.view.BarChartView;
+import com.db.chart.view.animation.Animation;
 
+import org.indywidualni.dbproject.MyApplication;
 import org.indywidualni.dbproject.R;
 import org.indywidualni.dbproject.activity.UserActivity;
 import org.indywidualni.dbproject.database.MaturaDataSource;
@@ -37,15 +40,31 @@ public class StudentChartFragment extends Fragment {
         try {
             final ArrayList<StudentExam> studentExams = dataSource.getAllStudentExams(UserActivity.getCurrentPesel());
 
-            //noinspection ConstantConditions
-            BarChartView chartView = (BarChartView) getView().findViewById(R.id.barchart);
-            // TODO
-            String[] strings = {"A", "B", "C"};
-            float[] longs = {1l, 4l, 5l};
-            BarSet set = new BarSet(strings, longs);
-            chartView.addData(set);
-            chartView.show();
+            if (studentExams != null && studentExams.size() > 0) {
+                String[] labels = new String[studentExams.size()];
+                float[] values = new float[studentExams.size()];
 
+                for (int i = 0; i < studentExams.size(); i++) {
+                    String shortName = studentExams.get(i).getCourse();
+                    labels[i] = shortName.substring(0, 3) + " (p" + studentExams.get(i).getLevel()
+                            + "t" + studentExams.get(i).getTime() + ")";
+                    values[i] = Long.parseLong(studentExams.get(i).getPercent(), 10);
+                }
+
+                //noinspection ConstantConditions
+                BarChartView chart = (BarChartView) getView().findViewById(R.id.barchart);
+                BarSet set = new BarSet(labels, values);
+
+                set.setColor(ContextCompat.getColor(MyApplication.getContextOfApplication(),
+                        R.color.colorPrimaryDark));
+                Animation anim = new Animation();
+                anim.setDuration(700);
+                chart.setStep(10);
+
+
+                chart.addData(set);
+                chart.show(anim);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

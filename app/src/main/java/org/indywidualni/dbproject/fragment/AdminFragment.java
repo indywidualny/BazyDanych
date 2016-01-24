@@ -121,6 +121,13 @@ public class AdminFragment extends ListFragment implements AdapterView.OnItemCli
             public void onClick(DialogInterface dialog, int id) {
                 String passwordHash = null;
 
+                // password cannot be too short
+                if (pass.getText().toString().length() < 5) {
+                    Toast.makeText(getActivity(), getString(R.string.pass_too_short),
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // create a salted hash of the given password
                 try {
                     passwordHash = AeSimpleSHA1.SHA1(pass.getText().toString());

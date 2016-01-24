@@ -26,6 +26,7 @@
     <string name="password_not_changed">Zmiana nie powiodła się</string>
     <string name="password_changed">Hasło zmienione</string>
     <string name="reset_database">Zresetuj bazę</string>
+    <string name="pass_too_short">Hasło musi mieć co najmniej 5 znaków</string>
     <string name="remove_app_data">Po prostu wyczyść dane tej aplikacji ;)</string>
     <string name="new_password" tools:ignore="Typos">Nowe hasło</string>
 
