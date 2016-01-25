@@ -1,16 +1,18 @@
 ##Bazy Danych
 
+Wszelkie (klikalne) elementy interfejsu są interaktywne, a po ich dotknięciu mamy dostęp do kolejnych elementów.
+
 ##Hasła
 
 <b>Uczniowie</b></br >
 189145, "Piknik"<br />
+126842, "Nadziana"<br />
 185542, "KozaAda"<br />
-209561, "Slonce"<br />
-175986, "Ramki5"<br />
 193651, "AnaMari"<br />
-119235, "Cokolwiek98"<br />
-192856, "Nigdy21"<br />
-126842, "Nadziana"<br /><br />
+~~209561, "Slonce"~~<br />
+~~175986, "Ramki5"~~<br />
+~~119235, "Cokolwiek98"~~<br />
+~~192856, "Nigdy21"~~<br /><br />
 
 <b>Nauczyciele</b></br >
 159624, "Poziom3"<br />
@@ -39,3 +41,13 @@ admin, "admin"<br /><br />
 126842 10fea34ec858803b5560ed710af8a371d0d5dd05<br /><br />
 
 admin  d033e22ae348aeb5660fc2140aec35850c4da997<br />
+
+## Znane błędy
+* niektóre loginy powodują NullPointerException, bo w bazie nie ma dla nich kompletnych danych
+(wyjątek nie został przechwycony, bo to zachowanie nigdy nie wystąpi dla kompletnych danych)
+* niepoprawna liczba zdanych egzaminów (tylko) w podsumowaniu ucznia
+(najwyraźniej jest gdzieś błąd w widoku [lub zapytaniu], bo baza była aktualizowana)
+* nie mam pewności czy edycja punktów działa, zapytanie jest poprawne i wykonuje się poprawnie
+(egzaminator ocenia konkretny egzamin, trudno z poziomu aplikacji zlokalizować ten egzamin jako uczeń)
+
+Baza danych jest w formacie SQLite, zatem w zasobach (raw) plik powinien mieć inne rozszerzenie. Jest czytany jako czysty tekst, więc nie ma to żadnego znaczenia dla aplikacji.
